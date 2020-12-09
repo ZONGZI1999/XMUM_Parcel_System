@@ -16,6 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `parcel_details`
+--
+
+DROP TABLE IF EXISTS `parcel_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `parcel_details` (
+  `parcel_id` int NOT NULL COMMENT '与Parcel_Info相同',
+  `detail_time` datetime NOT NULL COMMENT '操作发生时间',
+  `state` int NOT NULL COMMENT '执行的操作'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `parcel_details`
+--
+
+LOCK TABLES `parcel_details` WRITE;
+/*!40000 ALTER TABLE `parcel_details` DISABLE KEYS */;
+INSERT INTO `parcel_details` VALUES (1,'2020-12-09 16:34:52',0),(1,'2020-12-09 17:34:52',1),(1,'2020-12-09 17:40:52',2);
+/*!40000 ALTER TABLE `parcel_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `parcel_info`
 --
 
@@ -78,4 +102,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-09 18:22:45
+-- Dump completed on 2020-12-10  0:44:12
