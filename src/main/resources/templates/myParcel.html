@@ -1,0 +1,190 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" >
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/buttonStyle.css">
+  <title>My Parcel</title>
+</head>
+
+<body style="background: #66CCFF;">
+
+  <!-- 导航栏 -->
+  <div class="container-fluid" style="background: rgb(246, 246, 246);">
+    <div class="container" >
+      <nav class="navbar navbar-expand-lg">
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <div class="container">
+              <li class="nav-item">
+                <button type="button" onclick="window.location.href='parcelQuery.html'" 
+                class="btn btn-primary" style="width: 150px; height:45px; font-size: large;">
+                  Parcel Query
+                </button>
+              </li>
+            </div>
+  
+            <div class="container">
+              <li class="nav-item">
+                <button type="button" id="myParcel"
+                class="btn btn-primary active" style="width: 130px; height: 45px; font-size: large;">My Parcel</button>
+              </li>
+            </div>
+  
+            <div class="container">
+              <li class="nav-item">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='parcelPickUp.html'" 
+                style="width: 150px; height: 45px; font-size: large;">Parcel Pickup</button>
+              </li>
+            </div>
+  
+            <div class="container">
+              <li class="nav-item">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='parcelPost.html'" 
+                style="width: 150px; height: 45px; font-size: large;">Parcel Post</button>
+              </li>
+            </div>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <div class="btn-group dropleft">
+              <button type="button" class="btn btn-info dropdown-toggle" 
+              style="width: 150px; height: 45px;"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+              th:text="${userName.getFullName()}">
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Setting</a>
+                <a class="dropdown-item" href="#">Log Out</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Logo栏 -->
+  <div class="container bg-white">
+    <img src="images/logo.jpeg" class="img-responsive center-block" >
+  </div>
+
+  <!-- 我的包裹记录导航栏 -->
+  <div class="container bg-white">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" id="all" >All the parcels</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" id="taken" >Parcel already taken</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" id="abnormal">Abnormal Parcels</a>
+      </li>
+    </ul>
+    <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
+      <div class="tab-pane fade active show">
+        <!-- 标题 -->
+        <h3 style="padding-left: 30px; padding-right: 30px; margin-bottom: 40px; margin-top: 20px;">
+          ALL PARCELS
+        </h3>
+        <!-- 表格 -->
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Tracking Number</th>
+              <th scope="col">Receive Time By Warehouse</th>
+              <th scope="col">Status</th>
+              <th scope="col">Pick Up Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="parcel:${allParcel}">
+              <th scope="row" th:text="${parcel.getTrackingNumber()}"></th>
+              <td th:text="${#dates.format(parcel.getReceiveTime(),'yyyy-MM-dd HH:mm')}">12 December 2020</td>
+              <td th:text="${parcel.getCurrentStateByText()}"></td>
+              <td th:text="${#dates.format(parcel.getPickUpTime(),'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="container d-flex justify-content-center">
+          <div>
+            <ul class="pagination">
+              <li class="page-item" id="start">
+                <a class="page-link" th:href="@{'/myParcel?get=' + ${get} +'&page=' + ${currentPage - 1 }}">&laquo;</a>
+              </li>
+              <li class="page-item" th:id="'all-page-' + ${i}" th:each="i:${#numbers.sequence(1,maxPage)}">
+                <a class="page-link" th:href="@{'/myParcel?get=' + ${get} +'&page=' + ${i}}" th:text="${i}">1</a>
+              </li>
+              <li class="page-item" id="end">
+                <a class="page-link" th:href="@{'/myParcel?get=' + ${get} +'&page=' + ${currentPage + 1 }}">&raquo;</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer style="background-color: rgb(51, 51, 51); padding-bottom: 50px; padding-top: 10px; margin-top: 40px;">
+    <div class="container text-white text-center">
+      <h4>XMUM STUDENT WORKS</h4>
+    </div>
+  </footer>
+
+  <!-- Javascript -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script th:inline="javascript">
+    $().ready(function() {
+      //Javascript
+
+      var currentPage = [[${currentPage}]];
+      console.log(currentPage);
+      var maxPage = [[${maxPage}]];
+      console.log(maxPage)
+      if (maxPage === currentPage) {
+        $("#end").addClass('disabled');
+      }
+      if (currentPage === 1) {
+        $('#start').addClass('disabled');
+      }
+      $("#all-page-" + currentPage).addClass('active');
+
+      switch ([[${get}]]) {
+        case 0:
+          $('#all').addClass('active');
+          break;
+        case 1:
+          $('#taken').addClass('active');
+          break;
+        case 2:
+          $('#abnormal').addClass('active');
+          break;
+        default:
+          break;
+      }
+
+      $('#all').click(function () {
+        window.location.href = [[@{'/myParcel?get=0'}]];
+      })
+      $('#taken').click(function () {
+        window.location.href = [[@{'/myParcel?get=1'}]];
+      })
+      $('#abnormal').click(function () {
+        window.location.href = [[@{'/myParcel?get=2'}]];
+      })
+      $('#myParcel').click(function () {
+        window.location.href = [[@{'/myParcel'}]];
+      })
+    })
+  </script>
+</body>
+
+</html>
