@@ -6,4 +6,8 @@ $().ready(function(){
     $('#parcelQuery').click(function (){
         window.location.href = 'parcelQuery';
     })
+    $('#parcelPickUp').click(function(){
+        window.location.href = 'parcelPickUp';
+    });
+
 })

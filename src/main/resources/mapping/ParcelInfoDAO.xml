@@ -6,12 +6,18 @@
     <select id="queryParcelByUserId" resultType="Parcel_Info">
         select *
         from parcel_info
-        where user_id = #{userId} <if test="currentState != 0"> AND current_state = #{currentState}</if>
+        where
+        (user_id = #{userId} <if test="currentState != 3"> AND current_state = #{currentState}</if>)
+        OR
+        (consignee_id=#{userId} AND is_consignee!=0)
         limit #{offset}, 5
     </select>
     <select id="countParcelByUserId" resultType="java.lang.Integer">
         select count(parcel_id)
         from parcel_info
-        where user_id = #{userId} <if test="currentState != 0"> AND current_state = #{currentState}</if>
+        where
+        (user_id = #{userId} <if test="currentState != 3"> AND current_state = #{currentState}</if>)
+        OR
+        (consignee_id=#{userId} AND is_consignee!=0)
     </select>
 </mapper>

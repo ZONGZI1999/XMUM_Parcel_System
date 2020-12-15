@@ -9,17 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @Author: zongzi
- * @Date: 2020/12/9
- * @Description: MyParcel业务逻辑
+ * @Date: 2020/12/15
+ * @Description:
  **/
 @Controller
-//我的包裹功能控制区
-public class MyParcel {
+public class ParcelPickUp {
+
     //日志打印
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -35,19 +34,23 @@ public class MyParcel {
     @Autowired
     private ParcelQuery parcelQuery;
 
-    //获取所有我的包裹
-    @RequestMapping(value = "/myParcel", method = RequestMethod.GET)
-    public String queryAllMyParcel(@RequestParam(defaultValue = "1", required = false) Integer userId, //session
+    @RequestMapping("/parcelPickUp")
+    public String allReadyToPickUp(@RequestParam(defaultValue = "1", required = false) Integer userId, //session
                                    @RequestParam(defaultValue = "1", required = false) Integer page, //分页
-                                   @RequestParam(defaultValue = "3", required = false) Integer get, //筛选数据
-                                   Model model) {
+                                   @RequestParam(defaultValue = "0", required = false) Integer get, //筛选数据
+                                   Model model){
+        /*
+         * 数据筛选:
+         *   0 代取的包裹(默认)
+         *   2 异常包裹
+         */
+
         //数据校验
-        get = get >= 1 && get <= 3 ? get : 3;
+        get = get == 0 || get == 2 ? get : 0;
         //每页5条
 
         int resultCount = parcelInfoDAO.countParcelByUserId(userId, get); //一共有多少结果
         int maxPage = (int) Math.ceil(resultCount/5.00d); //根据结果算页数
-
 
         //数据校验
         page = page<=maxPage && page>=1 ? page : 1;
@@ -58,6 +61,6 @@ public class MyParcel {
         model.addAttribute("maxPage", maxPage); //最大页数
         model.addAttribute("currentPage", page); //当前页数
         model.addAttribute("get", get); //筛选数据
-        return "myParcel";
+        return "parcelPickUp";
     }
 }

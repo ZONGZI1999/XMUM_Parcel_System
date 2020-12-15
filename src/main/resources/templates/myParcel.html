@@ -36,7 +36,7 @@
 
             <div class="container">
               <li class="nav-item">
-                <button type="button" class="btn btn-primary" id='parcelPickUp'
+                <button type="button" class="btn btn-primary" id="parcelPickUp"
                         style="width: 150px; height: 45px; font-size: large;">Parcel Pickup</button>
               </li>
             </div>
@@ -157,7 +157,7 @@
       $("#all-page-" + currentPage).addClass('active');
 
       switch ([[${get}]]) {
-        case 0:
+        case 3:
           $('#all').addClass('active');
           break;
         case 1:
@@ -171,7 +171,7 @@
       }
 
       $('#all').click(function () {
-        window.location.href = [[@{'/myParcel?get=0'}]];
+        window.location.href = [[@{'/myParcel?get=3'}]];
       })
       $('#taken').click(function () {
         window.location.href = [[@{'/myParcel?get=1'}]];
