@@ -3,7 +3,7 @@ package online.zongzi.parcel.enums;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: 代取状态的状态码对应的中文
  **/
 public enum ConsigneeState {
     /*

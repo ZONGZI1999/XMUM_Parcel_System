@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: 包裹详细走件信息
  **/
 @Data
 @AllArgsConstructor

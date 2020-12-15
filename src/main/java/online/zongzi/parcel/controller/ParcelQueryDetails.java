@@ -14,26 +14,30 @@ import java.util.List;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: ParcelQuery 业务逻辑
  **/
 @Controller
 public class ParcelQueryDetails {
 
+    //包裹增删改查的服务
     @Autowired
     ParcelQuery parcelQuery;
 
+    //查询包裹的页面绑定
     @RequestMapping("/parcelQuery")
     public String ParcelQuery(){
         return "parcelQuery";
     }
 
+    //获得包裹详细数据的接口
     @RequestMapping("/query")
-    @ResponseBody
+    @ResponseBody //返回json数据 (数据格式: ParcelQueryResult)
     public ParcelQueryResult query(@RequestParam Integer parcelId){
+        //得到用户展示的数据
         List<Parcel_Details_To_Client> parcelDetailsToClient = parcelQuery.queryParcelDetails(parcelId);
+        //判断数据是否为空
         boolean isEmpty = parcelDetailsToClient.isEmpty();
-        ParcelQueryResult parcelQueryResult = new ParcelQueryResult(true, isEmpty,parcelDetailsToClient);
-        System.out.println(parcelDetailsToClient);
-        return parcelQueryResult;
+        //返回给用户的结果
+        return new ParcelQueryResult(true, isEmpty,parcelDetailsToClient);
     }
 }

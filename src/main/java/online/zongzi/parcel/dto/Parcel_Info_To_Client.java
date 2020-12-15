@@ -10,6 +10,7 @@ import java.util.Date;
 /**
  * @author : zongzi
  * @date : 2020/12/9
+ * 展示给用户的包裹详细信息的数据格式
  **/
 @Data
 @AllArgsConstructor

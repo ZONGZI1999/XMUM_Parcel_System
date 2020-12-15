@@ -3,7 +3,7 @@ package online.zongzi.parcel.enums;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: 走件流程的详细对应信息
  **/
 public enum DetailState {
     Received(0,"Your parcel has been received by Warehouse!"),

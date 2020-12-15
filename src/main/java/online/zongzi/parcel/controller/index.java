@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: 主页跳转
  **/
 @Controller
 public class index {
+    //主页跳转
     @RequestMapping("/")
     public String indexPage() {
         return "index";

@@ -15,42 +15,49 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: MyParcel业务逻辑
  **/
 @Controller
+//我的包裹功能控制区
 public class MyParcel {
+    //日志打印
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    //获取用户信息的数据库实例
     @Autowired
     private UserDAO userDAO;
 
+    //获取包裹信息的数据库实例
     @Autowired
     private ParcelInfoDAO parcelInfoDAO;
 
+    //包裹增删改查的服务
     @Autowired
     private ParcelQuery parcelQuery;
 
+    //获取所有我的包裹
     @RequestMapping(value = "/myParcel", method = RequestMethod.GET)
-    public String demoMethod(@RequestParam(defaultValue = "1", required = false) Integer userId,
-                             @RequestParam(defaultValue = "1", required = false) Integer page,
-                             @RequestParam(defaultValue = "0", required = false) Integer get,
-                             Model model) {
-        //每页10条
-
-        int resultCount = parcelInfoDAO.countParcelByUserId(userId, get);
-        int maxPage = (int) Math.ceil(resultCount/5.00d);
-
+    public String queryAllMyParcel(@RequestParam(defaultValue = "1", required = false) Integer userId, //session
+                                   @RequestParam(defaultValue = "1", required = false) Integer page, //分页
+                                   @RequestParam(defaultValue = "0", required = false) Integer get, //筛选数据
+                                   Model model) {
         //数据校验
         get = get >= 0 && get <= 2 ? get : 0;
+        //每页5条
+
+        int resultCount = parcelInfoDAO.countParcelByUserId(userId, get); //一共有多少结果
+        int maxPage = (int) Math.ceil(resultCount/5.00d); //根据结果算页数
+
+
         //数据校验
         page = page<=maxPage && page>=1 ? page : 1;
         //返回数据
-        model.addAttribute("userName", userDAO.queryUserInfo(userId));
-        model.addAttribute("resultNumber", resultCount);
-        model.addAttribute("allParcel",parcelQuery.queryAllParcel(userId, (page-1)*5, get));
-        model.addAttribute("maxPage", maxPage);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("get", get);
+        model.addAttribute("userName", userDAO.queryUserInfo(userId)); //用户名
+        model.addAttribute("resultNumber", resultCount); //总共的页数
+        model.addAttribute("allParcel",parcelQuery.queryAllParcel(userId, (page-1)*5, get)); //包裹数据(分页后)
+        model.addAttribute("maxPage", maxPage); //最大页数
+        model.addAttribute("currentPage", page); //当前页数
+        model.addAttribute("get", get); //筛选数据
         return "myParcel";
     }
 }

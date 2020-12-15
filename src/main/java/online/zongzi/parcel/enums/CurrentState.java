@@ -1,14 +1,9 @@
 package online.zongzi.parcel.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-
-
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: 当前包裹状态的状态码对应
  **/
 public enum CurrentState {
     /*

@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: 从数据库获取的包裹信息
  **/
 @Data
 @AllArgsConstructor

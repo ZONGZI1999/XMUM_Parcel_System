@@ -7,7 +7,8 @@ import lombok.Data;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description:
+ * @Description: 展示给用户包裹具体流程的数据格式
+ * 例如：何时 已入库、何时 已取件
  **/
 @Data
 @AllArgsConstructor
