@@ -18,5 +18,5 @@ public interface ParcelDetailsDAO {
     List<Parcel_Details> queryParcelById(@Param("parcelId") Integer parcelId);
     //获取最新状态
     Parcel_Details queryParcelStateTime(@Param("parcelId") Integer parcelId, @Param("state") Integer State);
-    void insertNewRecord(@Param("parcelId") Integer parcelId, @Param("state") Integer State);
+    void insertNewRecord(@Param("parcelId") Integer parcelId, @Param("state") Integer State, @Param("operatorId") Integer operatorId);
 }

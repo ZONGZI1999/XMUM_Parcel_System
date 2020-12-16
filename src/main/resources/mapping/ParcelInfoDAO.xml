@@ -32,7 +32,7 @@
             and parcel_id IN (
             select parcel_id
             from parcel_details p
-            where  ((state=0 or state=3 or state=4)) and detail_time >= all (
+            where  ((state<![CDATA[ <= ]]>0 or state=3 or state=4)) and detail_time >= all (
             select detail_time
             from parcel_details
             where parcel_details.parcel_id = p.parcel_id
@@ -69,7 +69,7 @@
             and parcel_id IN (
             select parcel_id
             from parcel_details p
-            where  ((state=0 or state=3 or state=4)) and detail_time >= all (
+            where  ((state<![CDATA[ <= ]]>0 or state=3 or state=4)) and detail_time >= all (
             select detail_time
             from parcel_details
             where parcel_details.parcel_id = p.parcel_id

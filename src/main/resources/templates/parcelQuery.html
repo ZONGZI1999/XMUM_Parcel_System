@@ -161,6 +161,7 @@
                         "<tr>\n" +
                         "<th scope=\"col\">Tracking Number</th>\n" +
                         "<th scope=\"col\">Receive Time By Warehouse</th>\n" +
+                        "<th scope=\"col\">Operator</th>"+
                         "</tr>\n" +
                         "</thead>\n" +
                         "<tbody>";
@@ -170,7 +171,8 @@
                         details.forEach(function (detail) {
 
                             html += '<tr><td>' + detail['detailTime'] + '</td>\n';
-                            html += '<td>' + detail['state'] + '</td></tr>\n';
+                            html += '<td>' + detail['state'] + '</td>\n';
+                            html += '<td>' + detail['operatorName'] + '</td></tr>\n'
                         })
                         html += "</tbody>\n" +
                             "</table>";

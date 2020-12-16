@@ -54,9 +54,17 @@ public class ParcelPickUp {
         try{
             Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
             Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
-            if((userId.equals(parcelInfo.getUserId()) || userId.equals(parcelInfo.getConsigneeId()))
-                    && (parcelDetails.getState().equals(3) || parcelDetails.getState().equals(4))){
-                parcelDetailsDAO.insertNewRecord(parcelId, 0);
+            if (userId.equals(parcelInfo.getUserId()) &&
+                    (parcelDetails.getState().equals(3) || parcelDetails.getState().equals(4))){
+                parcelDetailsDAO.insertNewRecord(parcelId, -2, userId);
+                parcelInfoDAO.updateConsignee(parcelId, 0);
+            }
+            if(userId.equals(parcelInfo.getConsigneeId()) && parcelDetails.getState().equals(4)) {
+                parcelDetailsDAO.insertNewRecord(parcelId, -2, userId);
+                parcelInfoDAO.updateConsignee(parcelId, 0);
+            }
+            if(userId.equals(parcelInfo.getConsigneeId()) && parcelDetails.getState().equals(3)) {
+                parcelDetailsDAO.insertNewRecord(parcelId, -1, userId);
                 parcelInfoDAO.updateConsignee(parcelId, 0);
             }
         }catch (Exception e) {
@@ -74,10 +82,10 @@ public class ParcelPickUp {
             Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
             if(userId.equals(parcelInfo.getConsigneeId())
                     && (parcelDetails.getState().equals(3))){
-                parcelDetailsDAO.insertNewRecord(parcelId, 4);
+                parcelDetailsDAO.insertNewRecord(parcelId, 4, userId);
             }
         }catch (Exception e) {
-            logger.warn("非法请求. 不存在该parcel ID");
+            logger.warn("非法请求. 不存在该parcel ID: " + parcelId);
         }
         return "redirect:/parcelPickUp";
     }
@@ -91,12 +99,12 @@ public class ParcelPickUp {
             Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
             Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
             if(userId.equals(parcelInfo.getUserId())
-                    && (parcelDetails.getState().equals(0))){
-                parcelDetailsDAO.insertNewRecord(parcelId, 3);
+                    && (parcelDetails.getState() <= 0)){
+                parcelDetailsDAO.insertNewRecord(parcelId, 3, userId);
                 parcelInfoDAO.updateConsignee(parcelId, consigneeId);
             }
         }catch (Exception e) {
-            logger.warn("非法请求. 不存在该parcel ID");
+            logger.warn("非法请求. 不存在该parcel ID: " + parcelId);
         }
         return "redirect:/parcelPickUp";
     }

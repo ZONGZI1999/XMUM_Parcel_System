@@ -38,5 +38,5 @@ public class Parcel_Info_To_Client implements Serializable {
     //若无则为 null
     private Integer consigneeId;
     private String consigneeName;
-
+    private String OperatorName;
 }

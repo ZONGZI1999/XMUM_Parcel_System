@@ -9,7 +9,7 @@
         where parcel_id = #{parcelId}
     </select>
     <select id="queryParcelStateTime" resultType="Parcel_Details">
-        select parcel_id, detail_time, state
+        select parcel_id, detail_time, state, operator_id
         from parcel_details
         where detail_time >= all (
         select detail_time
@@ -17,15 +17,15 @@
         where parcel_id = #{parcelId}
         <if test="state == 1">and state = 1 or state = 5</if>
         <if test="state == 2">and state = 2</if>
-        <if test="state == 0">and ((state=0 or state=3 or state=4))</if>)
+        <if test="state == 0">and ((state <![CDATA[ <= ]]> 0 or state=3 or state=4))</if>)
         <if test="state == 1">and state = 1 or state = 5</if>
         <if test="state == 2">and state = 2</if>
-        <if test="state == 0">and ((state=0 or state=3 or state=4))</if>
+        <if test="state == 0">and ((state<![CDATA[ <= ]]>0 or state=3 or state=4))</if>
         and parcel_id = #{parcelId}
     </select>
     <insert id="insertNewRecord">
-        insert into parcel_details(parcel_id, state)
+        insert into parcel_details(parcel_id, state, operator_id)
         values
-        (#{parcelId}, #{state})
+        (#{parcelId}, #{state}, #{operatorId})
     </insert>
 </mapper>

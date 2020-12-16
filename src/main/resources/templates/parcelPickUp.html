@@ -80,6 +80,7 @@
               <th scope="col">Tracking Number</th>
               <th scope="col">Time</th>
               <th scope="col">Current State</th>
+              <th scope="col">Operator</th>
               <th scope="col">Belonger</th>
               <th scope="col">Consignee</th>
             </tr>
@@ -89,9 +90,10 @@
               <td th:text="${parcel.getTrackingNumber()}"></td>
               <td th:text="${#dates.format(parcel.getCurrentStateTime(),'yyyy-MM-dd HH:mm:ss')}">12 December 2020</td>
               <td th:text="${parcel.getCurrentStateByText()}"></td>
+              <td th:text="${parcel.getOperatorName()}"></td>
               <td th:text="${parcel.getUserName()}"></td>
               <td>
-                <div class="container" th:if="${parcel.getCurrentStateByNumber() eq 0}">
+                <div class="container" th:if="${parcel.getCurrentStateByNumber() le 0}">
                   <button type="button" class="btn btn-info"
                           data-toggle="modal" data-target="#Consignee" id="consigneeButton"
                   th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} + ');'">Apply Consignee</button>
@@ -148,7 +150,7 @@
             <form method="post" th:action="@{'/applyConsignee'}">
             <div class="modal-body">
               <div class="form-group">
-              <input class="form-control form-control-lg is-invalid" type="text" placeholder="Enter Consignee ID" id="consigneeName"
+              <input class="form-control form-control-lg is-invalid" type="text" placeholder="Enter Consignee Name" id="consigneeName"
                      style="margin-bottom: 20px;" >
                 <div class="invalid-feedback">No result has been found!</div>
               </div>

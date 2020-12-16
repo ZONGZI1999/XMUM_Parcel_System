@@ -63,7 +63,8 @@ public class ParcelQueryImpl implements ParcelQuery {
                     parcelInfo.getConsigneeId(),
                     parcelInfo.getConsigneeId().equals(0)?
                             null:
-                            userDAO.queryUserInfo(parcelInfo.getConsigneeId()).getFullName()
+                            userDAO.queryUserInfo(parcelInfo.getConsigneeId()).getFullName(),
+                    userDAO.queryUserInfo(currentStateObject.getOperatorId()).getFullName()
 
             );
             toClients.add(parcelInfoToClient);
@@ -76,6 +77,9 @@ public class ParcelQueryImpl implements ParcelQuery {
     public List<Parcel_Details_To_Client> queryParcelDetails(Integer parcelId) {
 
         List<Parcel_Details> result = parcelDetailsDAO.queryParcelById(parcelId); //从数据库中获得原始数据
+        //将所有获取到的信息按时间从早到晚进行排序,
+        result.sort(Comparator.comparing(Parcel_Details::getDetailTime));
+        Collections.reverse(result);
         List<Parcel_Details_To_Client> toClients = new ArrayList<>(); //新建一个List 用于储存结果返回给用户
         DateFormat df3 = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.CHINA); //时间格式化的工具
 
@@ -83,12 +87,12 @@ public class ParcelQueryImpl implements ParcelQuery {
         for (Parcel_Details parcelDetails: result){
             Parcel_Details_To_Client parcelDetailsToClient = new Parcel_Details_To_Client(
                     df3.format(parcelDetails.getDetailTime()), //获取时间, 然后对时间进行格式化
-                    DetailState.stateOf(parcelDetails.getState()).getStateInfo()); //将原始数据状态转化为用户可读的信息
+                    DetailState.stateOf(parcelDetails.getState()).getStateInfo(), //将原始数据状态转化为用户可读的信息
+                    userDAO.queryUserInfo(parcelDetails.getOperatorId()).getFullName());
                                                                                     //例如0->Your parcel has been received by Warehouse!
             toClients.add(parcelDetailsToClient); //添加到返回给用户的结果中
         }
-        //将所有获取到的信息按时间从早到晚进行排序,
-        toClients.sort(Comparator.comparing(Parcel_Details_To_Client::getDetailTime));
+
         return toClients; //返回给Controller 再由Controller进行包装, 最后返回JSON给用户
     }
 }

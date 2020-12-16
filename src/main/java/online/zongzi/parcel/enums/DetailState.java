@@ -6,11 +6,13 @@ package online.zongzi.parcel.enums;
  * @Description : 走件流程的详细对应信息
  **/
 public enum DetailState {
+    Reject(-1, "Your application has been rejected!"),
+    Cancel(-2,"Your application has been canceled!"),
     Received(0,"Your parcel has been received by Warehouse!"),
     PickedUp(1,"Your parcel has been picked up by yourself"),
     Abnormal(2, "Your parcel is in abnormal statue"),
     ApplyingConsignee(3, "Your parcel is applying for pick up by consignee!"),
-    AcceptConsignee(4,"Consignee accept your apply."),
+    AcceptConsignee(4,"Consignee accept your application."),
     PickedUpByConsignee(5, "Your parcel has been picked up by consignee!");
 
     private int state;

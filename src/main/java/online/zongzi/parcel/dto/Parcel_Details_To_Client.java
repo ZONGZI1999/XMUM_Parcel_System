@@ -15,4 +15,5 @@ import lombok.Data;
 public class Parcel_Details_To_Client {
     String detailTime;
     String state;
+    String operatorName;
 }

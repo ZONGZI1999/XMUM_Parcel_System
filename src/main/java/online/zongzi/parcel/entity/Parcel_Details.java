@@ -18,4 +18,5 @@ public class Parcel_Details {
     private Integer parcelId;
     private Date detailTime;
     private Integer state;
+    private Integer operatorId;
 }
