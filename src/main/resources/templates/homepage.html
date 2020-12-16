@@ -1,0 +1,228 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" >
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/css/bootstrap.min.css'}">
+    <link rel="stylesheet" th:href="@{'/css/buttonStyle.css'}">
+    <title>My Parcel</title>
+
+    <style>
+
+        *{
+            font-family: "Arial Rounded MT Bold";
+        }
+
+        body
+        {
+            margin:0;
+            background-color: #424564;
+        }
+
+        .wrap
+        {
+            width: 100%;
+        }
+
+        .half_section
+        {
+            width: 50%;
+            height: 100%;
+            display:flex;
+            flex-direction: column;
+        }
+
+        #left
+        {
+            float:left;
+            justify-content: flex-start;
+        }
+
+        #right
+        {
+            float: right;
+            justify-content: center;
+        }
+
+        .spacing_alignment_box
+        {
+            margin: 1% 5%;
+        }
+
+        .m_info
+        {
+            background-color: #d02b75;
+            color: white;
+            border-radius: 30px;
+            border:0px;
+            height:100%;
+            width:20%;
+            font-size: 1.08em;
+            transition-duration: 0.4s;
+        }
+
+        .m_info:hover
+        {
+            cursor: pointer;
+            background-color: #e16ba0;
+            color: black;
+            font-size:1.2em;
+        }
+
+        .button_box
+        {
+            height:16%;
+        }
+
+        .menu_button
+        {
+            width:35%;
+            height:100%;
+            float:right;
+            font-size: 1.4em;
+            font-weight: 400;
+            color: white;
+            white-space: normal;
+            overflow-wrap: break-word;
+            margin-right: 33%;
+            transition-duration: inherit;
+        }
+
+        .menu_button:hover
+        {
+            border: white 4px solid;
+            font-size: 1.6em;
+        }
+
+        .paper:hover
+        {
+
+        }
+
+        .button1
+        {
+            background-color: #A36E6A;
+            margin-right: 17%;
+        }
+
+        .button2
+        {
+            background-color: #8A8484;
+            margin-right: 47%;
+        }
+
+        .button2:hover
+        {
+            /* background-color:#e16ba0;*/
+        }
+
+        .button3
+        {
+            background-color:#4B5A6D;
+            margin-right: 17%;
+        }
+
+        .button3:hover
+        {
+            /*background-color: #8b6ce0;*/
+        }
+
+        .button4
+        {
+            background-color:  #CEA98E;
+            margin-right: 47%;
+        }
+
+        .button4:hover
+        {
+            /*background-color: #fd9997;*/
+        }
+
+        .button5
+        {
+            background-color:#92ADDA;
+            margin-right: 17%;
+        }
+
+        .button5:hover
+        {
+            /*background-color: #79e7b0;*/
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="wrap">
+
+    <div class="half_section" id="left" style="background-color: transparent;">
+
+        <div style="margin: 20% 0% 5% 20%; height:35%"> <!--height of logo to be determined-->
+            <img th:src="@{'/images/logo_white.png'}" style="height: 100%; width: 100%; object-fit: contain"/>
+        </div>
+
+        <div class="spacing_alignment_box" style="height:7%; margin: 0% 0% 0% 20%;";> <!--height of button to be determined-->
+            <div>
+                <input type="button" value="Learn More" class="m_info" id="learnMore"> <!--color, background color and margin is unique to each button-->
+            </div>
+        </div>
+
+    </div>
+
+    <!--right side buttons-->
+    <div class="half_section" id="right">
+        <div class="spacing_alignment_box button_box">
+            <div>
+                <input type="button" class="menu_button button1 btn btn-primary" id="login" value="Login"> <!--color, background color and margin is unique to each button-->
+            </div>
+        </div>
+
+        <div class="spacing_alignment_box button_box">
+            <div>
+                <input type="button" class="menu_button button2 btn btn-primary" id="parcelQuery" value="Parcel Query">
+            </div>
+        </div>
+
+        <div class="spacing_alignment_box button_box">
+            <div>
+                <input type="button" class="menu_button button3 btn btn-primary" id="myParcel" value="My Parcel">
+            </div>
+        </div>
+
+        <div class="spacing_alignment_box button_box">
+            <div>
+                <input type="button" class="menu_button button4 btn btn-primary" id="parcelPickUp" value="Parcel Pickup">
+            </div>
+        </div>
+
+        <div class="spacing_alignment_box button_box">
+            <div>
+                <input type="button" class="menu_button button5 btn btn-primary" id="parcelPost" value="Parcel Post">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script th:src="@{'/js/jquery-3.5.1.min.js'}"></script>
+<script th:inline="javascript">
+    $().ready(function (){
+        $('#myParcel').click(function () {
+            window.location.href = [[@{'/myParcel'}]];
+        })
+        $('#parcelQuery').click(function (){
+            window.location.href = [[@{'/public/parcelQuery'}]];
+        })
+        $('#parcelPickUp').click(function(){
+            window.location.href = [[@{'/parcelPickUp'}]];
+        });
+        $('#login').click(function(){
+            window.location.href = [[@{'/public/login'}]];
+        });
+    })
+</script>
+</body>
+</html>

@@ -78,8 +78,8 @@
             <thead>
             <tr>
               <th scope="col">Tracking Number</th>
-              <th scope="col">Receive Time By Warehouse</th>
-              <th scope="col">Status</th>
+              <th scope="col">Time</th>
+              <th scope="col">Current State</th>
               <th scope="col">Belonger</th>
               <th scope="col">Consignee</th>
             </tr>
@@ -87,30 +87,30 @@
             <tbody>
             <tr  th:each="parcel:${allParcel}">
               <td th:text="${parcel.getTrackingNumber()}"></td>
-              <td th:text="${#dates.format(parcel.getReceiveTime(),'yyyy-MM-dd HH:mm')}">12 December 2020</td>
+              <td th:text="${#dates.format(parcel.getCurrentStateTime(),'yyyy-MM-dd HH:mm:ss')}">12 December 2020</td>
               <td th:text="${parcel.getCurrentStateByText()}"></td>
               <td th:text="${parcel.getUserName()}"></td>
               <td>
-                <div class="container" th:if="${parcel.getIsConsigneeByNumber() eq 0}">
+                <div class="container" th:if="${parcel.getCurrentStateByNumber() eq 0}">
                   <button type="button" class="btn btn-info"
-                          data-toggle="modal" data-target="#Consignee" id="okButton">Apply Consignee</button>
+                          data-toggle="modal" data-target="#Consignee" id="consigneeButton"
+                  th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} + ');'">Apply Consignee</button>
                 </div>
 
-                <div class="container" th:if="${(parcel.getIsConsigneeByNumber() eq 1 or
-                parcel.getIsConsigneeByNumber() eq 2)and
-                 userName.getUserId() eq parcel.getUserId()}">
-                  <button class="btn btn-warning">Cancel</button>
+                <div class="container" th:if="${((parcel.getCurrentStateByNumber() eq 3 or parcel.getCurrentStateByNumber() eq 4) and
+                 userName.getUserId() eq parcel.getUserId()) }">
+                  <a class="btn btn-warning" th:href="@{'/cancelOrRejectApply?parcelId=' + ${parcel.getParcelId()} }">Cancel</a>
                 </div>
 
-                <div class="container" th:if="${parcel.getIsConsigneeByNumber() eq 1 and
-                userName.getUserId() ne parcel.getUserId()}">
-                  <button class="btn btn-success">Accept</button>
-                  <button class="btn btn-danger">Reject</button>
+                <div class="container" th:if="${(parcel.getCurrentStateByNumber() eq 3 and
+                 userName.getUserId() ne parcel.getUserId()) }">
+                  <a class="btn btn-success" th:href="@{'/acceptApply?parcelId=' + ${parcel.getParcelId()} }">Accept</a>
+                  <a class="btn btn-danger" th:href="@{'/cancelOrRejectApply?parcelId=' + ${parcel.getParcelId()} }">Reject</a>
                 </div>
 
-                <div class="container" th:if="${parcel.getIsConsigneeByNumber() eq 2 and
+                <div class="container" th:if="${parcel.getCurrentStateByNumber() eq 4 and
                  userName.getUserId() ne parcel.getUserId()}">
-                  <button class="btn btn-danger">Reject</button>
+                  <a class="btn btn-danger" th:href="@{'/cancelOrRejectApply?parcelId=' + ${parcel.getParcelId()} }">Reject</a>
                 </div>
 
               </td>
@@ -145,12 +145,24 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+            <form method="post" th:action="@{'/applyConsignee'}">
             <div class="modal-body">
+              <div class="form-group">
+              <input class="form-control form-control-lg is-invalid" type="text" placeholder="Enter Consignee ID" id="consigneeName"
+                     style="margin-bottom: 20px;" >
+                <div class="invalid-feedback">No result has been found!</div>
+              </div>
+              <select name="consigneeId" class="form-control form-control-l" id="consigneeId">
+              </select>
+              <input type="hidden" id="parcelId" name="parcelId">
               <div id="resultText"></div>
             </div>
             <div class="modal-footer">
+              <div id="submitText" class="text-danger">Please select one consignee!</div>
+              <button type="submit" class="btn btn-info"  id="consigneeOK" >Submit</button>
               <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
+            </form>
           </div>
         </div>
       </div>
@@ -206,8 +218,75 @@
       })
     </script>
     <script th:inline="javascript">
+      function setParcelIdToInput(parcelIdFromUser){
+        $('#parcelId').val(parcelIdFromUser);
+      }
       $().ready(function (){
+        //提示文字隐藏
+        $('#consigneeId').hide();
+        $('#submitText').hide();
+        //搜索名字
+        $('#consigneeName').blur(function (){
+          $('#consigneeId').empty()
+          if ($('#consigneeName').val()==""){
+            $('#consigneeName').addClass('is-invalid');
+            $('#consigneeId').hide();
+            return false;
+          }
+          $.ajax({
+            //请求方式
+            type : "GET",
+            //请求地址
+            url : "http://localhost:8899/userInfo?fullName=" + $('#consigneeName').val(),
 
+            //请求成功
+            success : function(result) {
+              var html="";
+              if (result.length > 0 ) {
+                console.log(result.length)
+                result.forEach(function (detail){
+                  if([[${userName.getFullName()}]] !== detail['fullName']) {
+                    html += "<option value=\""+ detail['userId'] + "\">" + detail['fullName'] + ' (ID: ' + detail['userId'] + " )</option>";
+                  }
+                })
+              }
+              if(html ===""){
+                $('#consigneeName').addClass('is-invalid');
+                $('#consigneeId').hide();
+              } else {
+                $('#consigneeName').removeClass('is-invalid');
+                $('#consigneeId').show();
+              }
+              $('#consigneeId').append(html);
+              console.log(result)
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+              console.log(e.status);
+              console.log(e.responseText);
+            }
+          });
+        })
+
+        $("form").submit(function(e){
+          if($('#consigneeId').val() === null) {
+            $('#submitText').show()
+            setTimeout(function(){
+              $('#submitText').hide()
+            },2000);
+            return false;
+          }
+
+        });
+        $('#myParcel').click(function () {
+          window.location.href = [[@{'/myParcel'}]];
+        })
+        $('#parcelQuery').click(function (){
+          window.location.href = [[@{'/public/parcelQuery'}]];
+        })
+        $('#parcelPickUp').click(function(){
+          window.location.href = [[@{'/parcelPickUp'}]];
+        });
       })
     </script>
   </body>

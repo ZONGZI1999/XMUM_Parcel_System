@@ -14,32 +14,28 @@ import java.util.Date;
  **/
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Parcel_Info_To_Client {
+public class Parcel_Info_To_Client implements Serializable {
     private static final long serialVersionUID = 4087132641904761116L;
     private Integer parcelId;
     private Integer userId;
     private String userName;
     private String trackingNumber;
     /*
-     * 当前状态
-     * 0: 已入库
-     * 1: 已取件
-     * 2: 异常件
+     * 0 (被快递站接收)
+     * 1 (自己取件了)
+     * 2 (异常件)
+     * 3 (申请代取中)
+     * 4 (申请成功)
+     * 5 (代取成功)
      */
     private Integer currentStateByNumber;
+    private String currentStateByText;
+    //最新流转状态时间
+    private Date currentStateTime;
+
     private Date receiveTime;
     private Date pickUpTime;
-    private String currentStateByText;
-    /*
-     * 是否代取
-     * 0: 未代取
-     * 1: 请求中
-     * 2: 同意代取
-     * 3: 已代取
-     */
-    private Integer isConsigneeByNumber;
-    private String isConsigneeByText;
+    //若无则为 null
     private Integer consigneeId;
     private String consigneeName;
 

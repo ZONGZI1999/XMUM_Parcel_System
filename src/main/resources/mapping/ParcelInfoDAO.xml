@@ -7,17 +7,90 @@
         select *
         from parcel_info
         where
-        (user_id = #{userId} <if test="currentState != 3"> AND current_state = #{currentState}</if>)
-        OR
-        (consignee_id=#{userId} AND is_consignee!=0)
+        (user_id = #{userId} or consignee_id = #{userId})
+        <if test="currentState == 1">
+            and parcel_id IN (
+            select parcel_id
+            from parcel_details p
+            where (p.state = 1 or p.state = 5) and detail_time >= all (
+            select detail_time
+            from parcel_details
+            where parcel_details.parcel_id = p.parcel_id
+            ))
+        </if>
+        <if test="currentState == 2">
+            and parcel_id IN (
+            select parcel_id
+            from parcel_details p
+            where p.state = 2 and detail_time >= all (
+            select detail_time
+            from parcel_details
+            where parcel_details.parcel_id = p.parcel_id
+            ))
+        </if>
+        <if test="currentState == 0">
+            and parcel_id IN (
+            select parcel_id
+            from parcel_details p
+            where  ((state=0 or state=3 or state=4)) and detail_time >= all (
+            select detail_time
+            from parcel_details
+            where parcel_details.parcel_id = p.parcel_id
+            ))
+        </if>
         limit #{offset}, 5
     </select>
     <select id="countParcelByUserId" resultType="java.lang.Integer">
         select count(parcel_id)
         from parcel_info
         where
-        (user_id = #{userId} <if test="currentState != 3"> AND current_state = #{currentState}</if>)
-        OR
-        (consignee_id=#{userId} AND is_consignee!=0)
+        (user_id = #{userId} or consignee_id = #{userId})
+        <if test="currentState == 1">
+            and parcel_id IN (
+            select parcel_id
+            from parcel_details p
+            where (p.state = 1 or p.state = 5) and detail_time >= all (
+            select detail_time
+            from parcel_details
+            where parcel_details.parcel_id = p.parcel_id
+            ))
+        </if>
+        <if test="currentState == 2">
+            and parcel_id IN (
+            select parcel_id
+            from parcel_details p
+            where p.state = 2 and detail_time >= all (
+            select detail_time
+            from parcel_details
+            where parcel_details.parcel_id = p.parcel_id
+            ))
+        </if>
+        <if test="currentState == 0">
+            and parcel_id IN (
+            select parcel_id
+            from parcel_details p
+            where  ((state=0 or state=3 or state=4)) and detail_time >= all (
+            select detail_time
+            from parcel_details
+            where parcel_details.parcel_id = p.parcel_id
+            ))
+        </if>
     </select>
+
+    <select id="queryParcelInfo" resultType="Parcel_Info">
+        select * from parcel_info where parcel_id = #{parcelId}
+    </select>
+
+    <select id="queryParcelId" resultType="Integer">
+        select parcel_id
+        from parcel_info
+        where tracking_number = #{trackingNumber}
+    </select>
+
+    <update id="updateConsignee">
+        update parcel_info
+        set consignee_id = #{consigneeId}
+        where parcel_id = #{parcelId}
+    </update>
+
 </mapper>

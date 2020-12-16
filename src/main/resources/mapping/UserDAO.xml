@@ -8,4 +8,7 @@
         from user
         where user_id = #{userId}
     </select>
+    <select id="queryUserInfoByName" resultType="User">
+        select * from user where full_name like '%${fullName}%'
+    </select>
 </mapper>

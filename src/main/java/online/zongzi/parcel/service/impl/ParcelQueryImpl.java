@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @Author: zongzi
@@ -40,6 +37,7 @@ public class ParcelQueryImpl implements ParcelQuery {
     @Autowired
     private ParcelDetailsDAO parcelDetailsDAO;
 
+
     //获取所有包裹
     @Override
     public List<Parcel_Info_To_Client> queryAllParcel(Integer userId, Integer offset, Integer currentState) {
@@ -49,21 +47,24 @@ public class ParcelQueryImpl implements ParcelQuery {
         List<Parcel_Info_To_Client> toClients = new ArrayList<>();
         //对从数据库获取的所有结果进行转化, 转化为用户可读的数据
         for (Parcel_Info parcelInfo: result) {
+            Parcel_Details currentStateObject = parcelDetailsDAO.queryParcelStateTime(
+                    parcelInfo.getParcelId(),
+                    currentState);
             Parcel_Info_To_Client parcelInfoToClient  = new Parcel_Info_To_Client(
-                    parcelInfo.getParcelId(), //获取包裹ID
-                    parcelInfo.getUserId(), //获取用户ID
-                    userDAO.queryUserInfo(parcelInfo.getUserId()).getFullName(), //获取收件人名字
-                    parcelInfo.getTackingNumber(), //获取tracking Number
-                    parcelInfo.getCurrentState(), //得到包裹当前的状态
-                    parcelInfo.getReceiveTime(), //代收室接收到包裹的时间
-                    parcelInfo.getPickUpTime(), //用户取件的时间 若还没取件 则该时间为null
-                    CurrentState.stateOf(parcelInfo.getCurrentState()).getStateInfo(), //当前状态转化为用户可读的状态
-                    parcelInfo.getIsConsignee(), //是否代取了
-                    ConsigneeState.stateOf(parcelInfo.getIsConsignee()).getStateInfo(), //代取状态转化为用户可读的状态(若无则为null)
-                    parcelInfo.getConsigneeId(), //代取人ID
-                    (parcelInfo.getConsigneeId() == 0? //代取人名字(若未代取 则设置为null 避免error)
+                    parcelInfo.getParcelId(),
+                    parcelInfo.getUserId(),
+                    userDAO.queryUserInfo(parcelInfo.getUserId()).getFullName(),
+                    parcelInfo.getTrackingNumber(),
+                    currentStateObject.getState(),
+                    DetailState.stateOf(currentStateObject.getState()).getStateInfo(),
+                    currentStateObject.getDetailTime(),
+                    parcelInfo.getReceiveTime(),
+                    parcelInfo.getPickUpTime(),
+                    parcelInfo.getConsigneeId(),
+                    parcelInfo.getConsigneeId().equals(0)?
                             null:
-                            userDAO.queryUserInfo(parcelInfo.getConsigneeId()).getFullName())
+                            userDAO.queryUserInfo(parcelInfo.getConsigneeId()).getFullName()
+
             );
             toClients.add(parcelInfoToClient);
         }

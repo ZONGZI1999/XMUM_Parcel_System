@@ -1,5 +1,6 @@
 package online.zongzi.parcel.controller;
 
+import online.zongzi.parcel.dao.ParcelInfoDAO;
 import online.zongzi.parcel.dto.ParcelQueryResult;
 import online.zongzi.parcel.dto.Parcel_Details_To_Client;
 import online.zongzi.parcel.service.ParcelQuery;
@@ -17,11 +18,15 @@ import java.util.List;
  * @Description: ParcelQuery 业务逻辑
  **/
 @Controller
+@RequestMapping("/public")
 public class ParcelQueryDetails {
 
     //包裹增删改查的服务
     @Autowired
     ParcelQuery parcelQuery;
+
+    @Autowired
+    ParcelInfoDAO parcelInfoDAO;
 
     //查询包裹的页面绑定
     @RequestMapping("/parcelQuery")
@@ -32,7 +37,8 @@ public class ParcelQueryDetails {
     //获得包裹详细数据的接口
     @RequestMapping("/query")
     @ResponseBody //返回json数据 (数据格式: ParcelQueryResult)
-    public ParcelQueryResult query(@RequestParam Integer parcelId){
+    public ParcelQueryResult query(@RequestParam String trackingNumber){
+        Integer parcelId = parcelInfoDAO.queryParcelId(trackingNumber);
         //得到用户展示的数据
         List<Parcel_Details_To_Client> parcelDetailsToClient = parcelQuery.queryParcelDetails(parcelId);
         //判断数据是否为空

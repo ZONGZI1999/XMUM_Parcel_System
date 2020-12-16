@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<script>
-    window.location.href = "/myParcel";
-</script>
+<div th:text="${msg}"></div>
+<form th:action="@{'/public/setUser'}" method="get">
+    用户id: <input type="text" name="userId">
+    <button type="submit" >登录</button>
+</form>
+
 </body>
 </html>

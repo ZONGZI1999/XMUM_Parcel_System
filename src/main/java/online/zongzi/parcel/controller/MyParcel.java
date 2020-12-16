@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
@@ -37,10 +39,12 @@ public class MyParcel {
 
     //获取所有我的包裹
     @RequestMapping(value = "/myParcel", method = RequestMethod.GET)
-    public String queryAllMyParcel(@RequestParam(defaultValue = "1", required = false) Integer userId, //session
+    public String queryAllMyParcel(HttpServletRequest httpServletRequest,
                                    @RequestParam(defaultValue = "1", required = false) Integer page, //分页
                                    @RequestParam(defaultValue = "3", required = false) Integer get, //筛选数据
                                    Model model) {
+
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
         //数据校验
         get = get >= 1 && get <= 3 ? get : 3;
         //每页5条

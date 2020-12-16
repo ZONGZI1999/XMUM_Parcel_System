@@ -57,7 +57,7 @@
               </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="#">Setting</a>
-                <a class="dropdown-item" href="#">Log Out</a>
+                <a class="dropdown-item" th:href="@{'/public/logout'}">Log Out</a>
               </div>
             </div>
           </form>
@@ -179,6 +179,15 @@
       $('#abnormal').click(function () {
         window.location.href = [[@{'/myParcel?get=2'}]];
       })
+      $('#myParcel').click(function () {
+        window.location.href = [[@{'/myParcel'}]];
+      })
+      $('#parcelQuery').click(function (){
+        window.location.href = [[@{'/public/parcelQuery'}]];
+      })
+      $('#parcelPickUp').click(function(){
+        window.location.href = [[@{'/parcelPickUp'}]];
+      });
     })
   </script>
 </body>

@@ -1,7 +1,11 @@
 package online.zongzi.parcel.controller;
 
+import online.zongzi.parcel.dao.ParcelDetailsDAO;
 import online.zongzi.parcel.dao.ParcelInfoDAO;
 import online.zongzi.parcel.dao.UserDAO;
+import online.zongzi.parcel.entity.Parcel_Details;
+import online.zongzi.parcel.entity.Parcel_Info;
+import online.zongzi.parcel.entity.User;
 import online.zongzi.parcel.service.ParcelQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 
 /**
  * @Author: zongzi
@@ -30,15 +40,80 @@ public class ParcelPickUp {
     @Autowired
     private ParcelInfoDAO parcelInfoDAO;
 
+    @Autowired
+    private ParcelDetailsDAO parcelDetailsDAO;
+
     //包裹增删改查的服务
     @Autowired
     private ParcelQuery parcelQuery;
 
+    @RequestMapping("/cancelOrRejectApply")
+    public String cancelApply(HttpServletRequest httpServletRequest,
+                              @RequestParam("parcelId") Integer parcelId){
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
+        try{
+            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
+            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
+            if((userId.equals(parcelInfo.getUserId()) || userId.equals(parcelInfo.getConsigneeId()))
+                    && (parcelDetails.getState().equals(3) || parcelDetails.getState().equals(4))){
+                parcelDetailsDAO.insertNewRecord(parcelId, 0);
+                parcelInfoDAO.updateConsignee(parcelId, 0);
+            }
+        }catch (Exception e) {
+            logger.warn("非法请求. 不存在该parcel ID");
+        }
+        return "redirect:/parcelPickUp";
+    }
+
+    @RequestMapping("/acceptApply")
+    public String acceptApply(HttpServletRequest httpServletRequest,
+                              @RequestParam("parcelId") Integer parcelId){
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
+        try{
+            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
+            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
+            if(userId.equals(parcelInfo.getConsigneeId())
+                    && (parcelDetails.getState().equals(3))){
+                parcelDetailsDAO.insertNewRecord(parcelId, 4);
+            }
+        }catch (Exception e) {
+            logger.warn("非法请求. 不存在该parcel ID");
+        }
+        return "redirect:/parcelPickUp";
+    }
+
+    @RequestMapping(value = "/applyConsignee",method = RequestMethod.POST)
+    public String applyConsignee(HttpServletRequest httpServletRequest,
+                                 @RequestParam("parcelId") Integer parcelId,
+                                 @RequestParam("consigneeId") Integer consigneeId) {
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
+        try{
+            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
+            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
+            if(userId.equals(parcelInfo.getUserId())
+                    && (parcelDetails.getState().equals(0))){
+                parcelDetailsDAO.insertNewRecord(parcelId, 3);
+                parcelInfoDAO.updateConsignee(parcelId, consigneeId);
+            }
+        }catch (Exception e) {
+            logger.warn("非法请求. 不存在该parcel ID");
+        }
+        return "redirect:/parcelPickUp";
+    }
+
+    @RequestMapping("/userInfo")
+    @ResponseBody
+    public List<User> queryUserByName(@RequestParam("fullName") String fullName){
+        return userDAO.queryUserInfoByName(fullName);
+    }
+
+
     @RequestMapping("/parcelPickUp")
-    public String allReadyToPickUp(@RequestParam(defaultValue = "1", required = false) Integer userId, //session
+    public String allReadyToPickUp(HttpServletRequest httpServletRequest, //session
                                    @RequestParam(defaultValue = "1", required = false) Integer page, //分页
                                    @RequestParam(defaultValue = "0", required = false) Integer get, //筛选数据
                                    Model model){
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
         /*
          * 数据筛选:
          *   0 代取的包裹(默认)

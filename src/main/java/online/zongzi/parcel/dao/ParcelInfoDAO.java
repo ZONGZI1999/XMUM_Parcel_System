@@ -17,4 +17,7 @@ import java.util.List;
 public interface ParcelInfoDAO {
     List<Parcel_Info> queryParcelByUserId(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("currentState") Integer currentState);
     Integer countParcelByUserId(@Param("userId") Integer userId, @Param("currentState") Integer currentState);
+    Parcel_Info queryParcelInfo(@Param("parcelId") Integer parcelId);
+    void updateConsignee(@Param("parcelId") Integer parcelId,@Param("consigneeId") Integer consigneeId);
+    Integer queryParcelId(@Param("trackingNumber") String trackingNumber);
 }
