@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 public class index {
     //主页跳转
     @RequestMapping("/")
-    public String indexPage(HttpServletRequest httpServletRequest) {
-        if(httpServletRequest.getSession().getAttribute("userId") != null)
-            return "redirect:/myParcel";
+    public String indexPage() {
         return "homepage";
     }
 

@@ -2,9 +2,7 @@ package online.zongzi.parcel.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -16,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyMvcConfig implements WebMvcConfigurer {
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
-        WebMvcConfigurer webMvcConfigurer = new WebMvcConfigurer(){
+        return new WebMvcConfigurer(){
             //注册拦截器
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
@@ -27,7 +25,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
                         .excludePathPatterns("/","/public/**","/css/**","/js/**","/images/**");
             }
         };
-        return webMvcConfigurer;
     }
 
 }

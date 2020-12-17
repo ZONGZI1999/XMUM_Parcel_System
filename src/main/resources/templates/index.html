@@ -1,15 +1,192 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div th:text="${msg}"></div>
-<form th:action="@{'/public/setUser'}" method="get">
-    用户id: <input type="text" name="userId">
-    <button type="submit" >登录</button>
-</form>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/css/bootstrap.min.css'}">
+    <link rel="stylesheet" th:href="@{'/css/buttonStyle.css'}">
+    <title>login</title>
+    <style>
+        body
+        {
+            margin:0;
+            /*background-color: #1a0e60;*/
+            background-color:#424564;
+        }
+
+        .half_section
+        {
+            width: 50%;
+            height: 100%;
+            display:flex;
+            flex-direction: column;
+        }
+
+        #left
+        {
+            float:left;
+            justify-content: flex-start;
+        }
+
+        #right
+        {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login_box
+        {
+            width:50%;
+            height:55%;
+            background-color: #f5f5f5;
+            border-radius: 1em;
+        }
+
+        .login_box_items
+        {
+            display:flex;
+            height:25%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login_title
+        {
+            font-size: 2em;
+            font-weight: 500;
+        }
+
+        .fill-in-box
+        {
+            width:70%;
+        }
+
+        .fill-in-titles
+        {
+            font-size: 1.3em;
+        }
+
+        .submit-button
+        {
+            font-size: 1.2em;
+            width:25%;
+            height:45%;
+        }
+
+    </style>
+</head>
+
+<body>
+<!--left side-->
+<div class="wrap">
+
+    <div class="half_section" id="left" style="background-color: transparent;">
+        <div style="margin: 28% 0% 0% 25%; height:35%"> <!--height of logo to be determined-->
+            <img th:src="@{'/images/logo_white.png'}" style="height: 100%; width: 100%; object-fit: contain"/>
+        </div>
+    </div>
+    <!--right side-->
+
+    <!-- @{'/public/check'}-->
+    <div class="half_section" id="right">
+        <div class="login_box">
+            <div class="login_box_items">
+                <div class="login_title">
+                    Login <br>
+                </div>
+
+            </div>
+
+            <div class="login_box_items">
+                <div class="fill-in-box">
+                    <div class="fill-in-titles">
+                        User ID
+                    </div>
+                    <div>
+                        <input type="text" id="userId" name="userId" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="login_box_items">
+                <div class="fill-in-box">
+                    <div class="fill-in-titles">
+                        Password
+                    </div>
+                    <div>
+                        <input type="password" id="password" name="password" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div th:text="${msg}" id="message" style="text-align: center;color: red"></div>
+            <div class="login_box_items">
+                <button type="button" id="submitButton" style="width: 120px" class="submit-button btn btn-primary" >
+                    Log In
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{'/js/jquery-3.5.1.min.js'}"></script>
+<script th:inline="javascript">
+    $().ready(function (){
+        $("#submitButton").click(function(){
+            if($("#userId").val() === "" || $("#password").val() === "") {
+                $("#message").text("Please enter User ID and Password!");
+                return false;
+            }
+            $('#submitButton').attr("disabled",true);
+            $('#submitButton').text("Please Wait")
+            var list = {
+                "userId": $("#userId").val(),
+                "password": $("#password").val()
+            };
+            setTimeout(function (){
+                $.ajax({
+                    //请求方式
+                    type : "POST",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url : [[@{'/public/check'}]],
+                    //数据，json字符串
+                    data : JSON.stringify(list),
+                    //请求成功
+                    success : function(result) {
+                        if(result['success']){
+                            $('#message').empty()
+                            $('#submitButton').hide()
+                            $('#message').text(result['msg']);
+                            setTimeout(function (){
+                                window.location.href = [[@{'/'}]]
+                            },500)
+                        } else {
+                            $('#message').empty()
+                            $('#message').text(result['msg']);
+                            $('#submitButton').attr("disabled",false);
+                            $('#submitButton').text("Log In");
+                        }
+                        console.log(result);
+                    },
+                    //请求失败，包含具体的错误信息
+                    error : function(e){
+                        console.log(e.status);
+                        console.log(e.responseText);
+                        $('#message').text(e.responseText['error']);
+                        $('#submitButton').attr("disabled",false);
+                        $('#submitButton').text("Log In");
+                    }
+                });
+
+            },1000)
+
+            //
+
+        })
+    });
+</script>
 </body>
 </html>

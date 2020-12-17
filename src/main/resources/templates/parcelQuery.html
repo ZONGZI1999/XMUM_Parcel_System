@@ -151,7 +151,7 @@
                 //请求方式
                 type : "GET",
                 //请求地址
-                url : "http://localhost:8899/public/query?trackingNumber=" + result,
+                url : [[@{'/public/query?trackingNumber='}]] + result,
                 //请求成功
                 success : function(result) {
                     console.log(result)

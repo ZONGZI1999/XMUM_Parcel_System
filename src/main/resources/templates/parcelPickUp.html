@@ -239,7 +239,7 @@
             //请求方式
             type : "GET",
             //请求地址
-            url : "http://localhost:8899/userInfo?fullName=" + $('#consigneeName').val(),
+            url : [[@{'/userInfo?fullName='}]] + $('#consigneeName').val(),
 
             //请求成功
             success : function(result) {

@@ -1,9 +1,13 @@
 package online.zongzi.parcel.controller;
 
+import online.zongzi.parcel.dao.UserDAO;
+import online.zongzi.parcel.dto.LoginResult;
+import online.zongzi.parcel.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,15 +20,39 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/public")
 public class login {
-    @RequestMapping("/setUser")
-    public String setSession(@RequestParam("userId") Integer userId,
-                             HttpServletRequest httpServletRequest) {
-        HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.setAttribute("userId", userId);
-        return "redirect:/";
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private UserDAO userDAO;
+
+
+    @RequestMapping("/check")
+    @ResponseBody
+    public LoginResult loginService(@RequestBody User userFromClient,
+                               HttpServletRequest httpServletRequest){
+        System.out.println(userFromClient.getUserId() + '\n' + userFromClient.getPassword());
+        LoginResult loginResult = new LoginResult(false, "Login fail! Please retry!");
+        try{
+            User user = userDAO.queryUserInfo(userFromClient.getUserId());
+            if (user.getPassword().equals(userFromClient.getPassword())){
+                HttpSession httpSession = httpServletRequest.getSession();
+                httpSession.setAttribute("userId", userFromClient.getUserId());
+                loginResult.setSuccess(true);
+                loginResult.setMsg("Success Login! Please wait!");
+                return loginResult;
+            }
+        } catch (Exception e){
+            logger.warn("No user has been found! (userId:" + userFromClient.getUserId() + ")");
+        }
+
+        return loginResult;
     }
+
     @RequestMapping("/login")
-    public String loginPage() {
+    public String loginPage(HttpServletRequest httpServletRequest) {
+        if(httpServletRequest.getSession().getAttribute("userId") != null)
+            return "redirect:/myParcel";
         return "index";
     }
     @RequestMapping("/logout")
