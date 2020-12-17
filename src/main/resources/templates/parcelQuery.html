@@ -21,7 +21,7 @@
               <li class="nav-item">
                 <button type="button" id="parcelQuery"
                 class="btn btn-primary active" style="width: 150px; height:45px; font-size: large;">
-                  Parcel Query
+                  Search
                 </button>
               </li>
             </div>
@@ -29,21 +29,21 @@
             <div class="container">
               <li class="nav-item">
                 <button type="button" id="myParcel"
-                class="btn btn-primary" style="width: 130px; height: 45px; font-size: large;">My Parcel</button>
+                class="btn btn-primary" style="width: 130px; height: 45px; font-size: large;">My Parcels</button>
               </li>
             </div>
   
             <div class="container">
               <li class="nav-item">
                 <button type="button" class="btn btn-primary" id='parcelPickUp'
-                style="width: 150px; height: 45px; font-size: large;">Parcel Pickup</button>
+                style="width: 150px; height: 45px; font-size: large;">Parcel Pickups</button>
               </li>
             </div>
   
             <div class="container">
               <li class="nav-item">
                 <button type="button" class="btn btn-primary" id='parcelPost'
-                style="width: 150px; height: 45px; font-size: large;">Parcel Post</button>
+                style="width: 150px; height: 45px; font-size: large;">Post a parcel</button>
               </li>
             </div>
   
@@ -52,8 +52,8 @@
       </nav>
     </div>
     <!-- Logo栏 -->
-    <div class="container">
-      <img th:src="@{'/images/logo.jpeg'}" class="img-responsive center-block">
+    <div class="container" style="padding: 5% 0% 5% 19.5%">
+      <img th:src="@{'/images/logo_blue.png'}" style="width:65%" class="img-responsive center-block">
     </div>
   
     <!-- 包裹查询页面 -->
@@ -67,14 +67,14 @@
                     padding-top: 30px;
                     padding-bottom: 30px;">
                     <h3 class="text-center">
-                        PARCEL QUERY
+                        Search for a parcel
                     </h3>
                     <div class="text-center" style="margin-bottom: 20px;">
-                        Enter the tracking number of parcel which you want to query
+                        Please enter tracking number
                     </div>
                     <!-- 输入框 -->
                     <div class="form-group">
-                        <input class="form-control form-control-lg" type="text" placeholder="Enter tracking number" id="trackingNumber" 
+                        <input class="form-control form-control-lg" type="text" placeholder="Ex. SF10000121123" id="trackingNumber"
                         style="margin-bottom: 20px;">
                     <div class="invalid-feedback">Please enter tracking number</div>
                     </div>
@@ -89,7 +89,7 @@
                         <div class="modal-dialog modal-lg" role="document">
                           <div class="modal-content" >
                             <div class="modal-header">
-                              <h3 class="modal-title">Query Result</h3>
+                              <h3 class="modal-title">Search Result</h3>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -160,7 +160,7 @@
                         "<thead>\n" +
                         "<tr>\n" +
                         "<th scope=\"col\">Tracking Number</th>\n" +
-                        "<th scope=\"col\">Receive Time By Warehouse</th>\n" +
+                        "<th scope=\"col\">Arrival Time</th>\n" +
                         "<th scope=\"col\">Operator</th>"+
                         "</tr>\n" +
                         "</thead>\n" +

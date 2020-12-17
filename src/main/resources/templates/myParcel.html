@@ -7,10 +7,10 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/buttonStyle.css">
-  <title>My Parcel</title>
+  <title>My Parcels</title>
 </head>
 
-<body style="background: #66CCFF;">
+<body>
 
   <!-- 导航栏 -->
   <div class="container-fluid" style="background: rgb(246, 246, 246);">
@@ -22,7 +22,7 @@
               <li class="nav-item">
                 <button type="button" id="parcelQuery"
                         class="btn btn-primary" style="width: 150px; height:45px; font-size: large;">
-                  Parcel Query
+                  Search
                 </button>
               </li>
             </div>
@@ -30,21 +30,21 @@
             <div class="container">
               <li class="nav-item">
                 <button type="button" id="myParcel"
-                        class="btn btn-primary active" style="width: 130px; height: 45px; font-size: large;">My Parcel</button>
+                        class="btn btn-primary active" style="width: 130px; height: 45px; font-size: large;">My Parcels</button>
               </li>
             </div>
 
             <div class="container">
               <li class="nav-item">
                 <button type="button" class="btn btn-primary" id="parcelPickUp"
-                        style="width: 150px; height: 45px; font-size: large;">Parcel Pickup</button>
+                        style="width: 150px; height: 45px; font-size: large;">Parcel Pickups</button>
               </li>
             </div>
 
             <div class="container">
               <li class="nav-item">
                 <button type="button" class="btn btn-primary" id='parcelPost'
-                        style="width: 150px; height: 45px; font-size: large;">Parcel Post</button>
+                        style="width: 150px; height: 45px; font-size: large;">Post a parcel</button>
               </li>
             </div>
           </ul>
@@ -67,18 +67,18 @@
   </div>
 
   <!-- Logo栏 -->
-  <div class="container bg-white">
-    <img src="images/logo.jpeg" class="img-responsive center-block" >
+  <div class="container bg-white" style="padding: 5% 0% 5% 19.5%" >
+    <img src="images/logo_blue.png" style="width:65%" class="img-responsive center-block" >
   </div>
 
   <!-- 我的包裹记录导航栏 -->
   <div class="container bg-white">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" id="all" >All the parcels</a>
+        <a class="nav-link" data-toggle="tab" id="all" >All parcels</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" id="taken" >Parcel already taken</a>
+        <a class="nav-link" data-toggle="tab" id="taken" >Parcel History</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" id="abnormal">Abnormal Parcels</a>
@@ -95,7 +95,7 @@
           <thead>
             <tr>
               <th scope="col">Tracking Number</th>
-              <th scope="col">Receive Time By Warehouse</th>
+              <th scope="col">Time of arrival</th>
               <th scope="col">Current Status</th>
               <th scope="col">Operator</th>
               <th scope="col">Pick Up Time</th>

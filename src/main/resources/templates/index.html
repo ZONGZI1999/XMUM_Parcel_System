@@ -122,7 +122,7 @@
             </div>
             <div th:text="${msg}" id="message" style="text-align: center;color: red"></div>
             <div class="login_box_items">
-                <button type="button" id="submitButton" style="width: 120px" class="submit-button btn btn-primary" >
+                <button type="button" id="submitButton" style="width: 120px;font-size: 0.9em;" class="submit-button btn btn-primary" >
                     Log In
                 </button>
             </div>
@@ -135,11 +135,11 @@
     $().ready(function (){
         $("#submitButton").click(function(){
             if($("#userId").val() === "" || $("#password").val() === "") {
-                $("#message").text("Please enter User ID and Password!");
+                $("#message").text("Please enter your User ID and Password");
                 return false;
             }
             $('#submitButton').attr("disabled",true);
-            $('#submitButton').text("Please Wait")
+            $('#submitButton').text("Authenticating")
             var list = {
                 "userId": $("#userId").val(),
                 "password": $("#password").val()

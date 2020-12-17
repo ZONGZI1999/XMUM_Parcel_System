@@ -22,7 +22,7 @@
                 <li class="nav-item">
                   <button type="button" id="parcelQuery"
                           class="btn btn-primary" style="width: 150px; height:45px; font-size: large;">
-                    Parcel Query
+                    Search
                   </button>
                 </li>
               </div>
@@ -30,21 +30,21 @@
               <div class="container">
                 <li class="nav-item">
                   <button type="button" id="myParcel"
-                          class="btn btn-primary" style="width: 130px; height: 45px; font-size: large;">My Parcel</button>
+                          class="btn btn-primary" style="width: 130px; height: 45px; font-size: large;">My Parcels</button>
                 </li>
               </div>
 
               <div class="container">
                 <li class="nav-item">
                   <button type="button" class="btn btn-primary active" id="parcelPickUp"
-                          style="width: 150px; height: 45px; font-size: large;">Parcel Pickup</button>
+                          style="width: 150px; height: 45px; font-size: large;">Parcel Pickups</button>
                 </li>
               </div>
 
               <div class="container">
                 <li class="nav-item">
                   <button type="button" class="btn btn-primary" id='parcelPost'
-                          style="width: 150px; height: 45px; font-size: large;">Parcel Post</button>
+                          style="width: 150px; height: 45px; font-size: large;">Post a parcel</button>
                 </li>
               </div>
     
@@ -53,15 +53,15 @@
         </nav>
       </div>
     <!-- Logo栏 -->
-    <div class="container">
-      <img src="images/logo.jpeg" class="img-responsive center-block">
+    <div class="container bg-white" style="padding: 5% 0% 5% 19.5%" >
+      <img src="images/logo_blue.png" style="width:65%" class="img-responsive center-block" >
     </div>
   
     <!-- 我的包裹记录导航栏 -->
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" id="pickUpParcel">Pick Up Pracels</a>
+          <a class="nav-link" data-toggle="tab" id="pickUpParcel">Parcel Pickups</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" id="abnormal">Abnormal Parcels</a>
@@ -81,7 +81,7 @@
               <th scope="col">Time</th>
               <th scope="col">Current State</th>
               <th scope="col">Operator</th>
-              <th scope="col">Belonger</th>
+              <th scope="col">Owner</th>
               <th scope="col">Consignee</th>
             </tr>
             </thead>
@@ -96,7 +96,7 @@
                 <div class="container" th:if="${parcel.getCurrentStateByNumber() le 0}">
                   <button type="button" class="btn btn-info"
                           data-toggle="modal" data-target="#Consignee" id="consigneeButton"
-                  th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} + ');'">Apply Consignee</button>
+                  th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} + ');'">Request for consignee pickup</button>
                 </div>
 
                 <div class="container" th:if="${((parcel.getCurrentStateByNumber() eq 3 or parcel.getCurrentStateByNumber() eq 4) and

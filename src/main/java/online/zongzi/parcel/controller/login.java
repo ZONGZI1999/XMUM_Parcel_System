@@ -32,18 +32,18 @@ public class login {
     public LoginResult loginService(@RequestBody User userFromClient,
                                HttpServletRequest httpServletRequest){
         System.out.println(userFromClient.getUserId() + '\n' + userFromClient.getPassword());
-        LoginResult loginResult = new LoginResult(false, "Login fail! Please retry!");
+        LoginResult loginResult = new LoginResult(false, "Login failed! Please try again!");
         try{
             User user = userDAO.queryUserInfo(userFromClient.getUserId());
             if (user.getPassword().equals(userFromClient.getPassword())){
                 HttpSession httpSession = httpServletRequest.getSession();
                 httpSession.setAttribute("userId", userFromClient.getUserId());
                 loginResult.setSuccess(true);
-                loginResult.setMsg("Success Login! Please wait!");
+                loginResult.setMsg("Login successful! Please wait...");
                 return loginResult;
             }
         } catch (Exception e){
-            logger.warn("No user has been found! (userId:" + userFromClient.getUserId() + ")");
+            logger.warn("No user has been found. (userId:" + userFromClient.getUserId() + ")");
         }
 
         return loginResult;
