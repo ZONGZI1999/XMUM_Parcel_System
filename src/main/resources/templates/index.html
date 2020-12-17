@@ -93,10 +93,12 @@
     <div class="half_section" id="right">
         <div class="login_box">
             <div class="login_box_items">
-                <div class="login_title">
-                    Login <br>
+                <div>
+                    <div class="login_title" style="text-align: center">
+                        Login <br>
+                    </div>
+                    <div th:text="${msg}" id="message" style="text-align: center;color: red"></div>
                 </div>
-
             </div>
 
             <div class="login_box_items">
@@ -120,7 +122,6 @@
                     </div>
                 </div>
             </div>
-            <div th:text="${msg}" id="message" style="text-align: center;color: red"></div>
             <div class="login_box_items">
                 <button type="button" id="submitButton" style="width: 120px;font-size: 0.9em;" class="submit-button btn btn-primary" >
                     Log In
