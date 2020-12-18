@@ -12,9 +12,9 @@ public enum CurrentState {
      * 1: 已取件
      * 2: 异常件
      */
-    InProcess(0, "Received by Warehouse"),
+    InProcess(0, "Arrived"),
     PickedUp(1,"Picked Up"),
-    Abnormal(2,"Abnormal Parcels");
+    Abnormal(2,"Abnormal");
 
 
     private int state;

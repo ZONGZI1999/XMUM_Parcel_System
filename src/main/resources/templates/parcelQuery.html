@@ -10,54 +10,55 @@
     <title>Parcel Query</title>
   </head>
   
-  <body>
-  
-    <!-- 导航栏 -->
-    <div class="container">
-      <nav class="navbar navbar-expand-lg">
-        <div class="collapse navbar-collapse" id="navbarColor01">
-          <ul class="navbar-nav mr-auto">
-            <div class="container">
-              <li class="nav-item">
-                <button type="button" id="parcelQuery"
-                class="btn btn-primary active" style="width: 150px; height:45px; font-size: large;">
-                  Parcel Query
-                </button>
-              </li>
-            </div>
-  
-            <div class="container">
-              <li class="nav-item">
-                <button type="button" id="myParcel"
-                class="btn btn-primary" style="width: 130px; height: 45px; font-size: large;">My Parcel</button>
-              </li>
-            </div>
-  
-            <div class="container">
-              <li class="nav-item">
-                <button type="button" class="btn btn-primary" id='parcelPickUp'
-                style="width: 150px; height: 45px; font-size: large;">Parcel Pickup</button>
-              </li>
-            </div>
-  
-            <div class="container">
-              <li class="nav-item">
-                <button type="button" class="btn btn-primary" id='parcelPost'
-                style="width: 150px; height: 45px; font-size: large;">Parcel Post</button>
-              </li>
-            </div>
-  
-          </ul>
-        </div>
-      </nav>
-    </div>
+  <body style="background-color: #424564">
+
+  <!-- 导航栏 -->
+  <div class="container-fluid" >
+      <div class="container" style="background-color:#f5f5f5">
+          <nav class="navbar navbar-expand-lg">
+              <div class="collapse navbar-collapse" id="navbarColor01">
+                  <ul class="navbar-nav mr-auto">
+                      <div class="container">
+                          <li class="nav-item">
+                              <button type="button" id="parcelQuery"
+                                      class="btn btn-primary active" style="width: 150px; height:45px; font-size: large;">
+                                  Search
+                              </button>
+                          </li>
+                      </div>
+
+                      <div class="container">
+                          <li class="nav-item">
+                              <button type="button" id="myParcel"
+                                      class="btn btn-primary" style="width: 130px; height: 45px; font-size: large;">My Parcels</button>
+                          </li>
+                      </div>
+
+                      <div class="container">
+                          <li class="nav-item">
+                              <button type="button" class="btn btn-primary" id="parcelPickUp"
+                                      style="width: 150px; height: 45px; font-size: large;">Parcel Pickups</button>
+                          </li>
+                      </div>
+
+                      <div class="container">
+                          <li class="nav-item">
+                              <button type="button" class="btn btn-primary" id='parcelPost'
+                                      style="width: 150px; height: 45px; font-size: large;">Post a parcel</button>
+                          </li>
+                      </div>
+                  </ul>
+              </div>
+          </nav>
+      </div>
+  </div>
     <!-- Logo栏 -->
-    <div class="container">
-      <img th:src="@{'/images/logo.jpeg'}" class="img-responsive center-block">
+    <div class="container bg-white" style="padding: 5% 0% 5% 19.5%">
+      <img th:src="@{'/images/logo_blue.png'}" style="width:65%" class="img-responsive center-block">
     </div>
   
     <!-- 包裹查询页面 -->
-    <div class="container">
+    <div class="container bg-white" style="padding-bottom: 5%">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="container" style="
@@ -67,14 +68,14 @@
                     padding-top: 30px;
                     padding-bottom: 30px;">
                     <h3 class="text-center">
-                        PARCEL QUERY
+                        Search for a parcel
                     </h3>
                     <div class="text-center" style="margin-bottom: 20px;">
-                        Enter the tracking number of parcel which you want to query
+                        Please enter tracking number
                     </div>
                     <!-- 输入框 -->
                     <div class="form-group">
-                        <input class="form-control form-control-lg" type="text" placeholder="Enter tracking number" id="trackingNumber" 
+                        <input class="form-control form-control-lg" type="text" placeholder="Ex. SF10000121123" id="trackingNumber"
                         style="margin-bottom: 20px;">
                     <div class="invalid-feedback">Please enter tracking number</div>
                     </div>
@@ -89,7 +90,7 @@
                         <div class="modal-dialog modal-lg" role="document">
                           <div class="modal-content" >
                             <div class="modal-header">
-                              <h3 class="modal-title">Query Result</h3>
+                              <h3 class="modal-title">Search Result</h3>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -110,7 +111,7 @@
   
 
     <!-- 页脚 -->
-    <footer style="background-color: rgb(51, 51, 51); padding-bottom: 50px; padding-top: 10px; margin-top: 40px;">
+    <footer style="background-color: rgb(51, 51, 51); padding-bottom: 50px; padding-top: 10px;">
       <div class="container text-white text-center">
         <h4>XMUM STUDENT WORKS</h4>
       </div>
@@ -160,7 +161,7 @@
                         "<thead>\n" +
                         "<tr>\n" +
                         "<th scope=\"col\">Tracking Number</th>\n" +
-                        "<th scope=\"col\">Receive Time By Warehouse</th>\n" +
+                        "<th scope=\"col\">Arrival Time</th>\n" +
                         "<th scope=\"col\">Operator</th>"+
                         "</tr>\n" +
                         "</thead>\n" +
