@@ -3,7 +3,7 @@ package online.zongzi.parcel.enums;
 /**
  * @Author: zongzi
  * @Date: 2020/12/9
- * @Description : 走件流程的详细对应信息
+ * @Description : 走件流程的详细对应信息(展示给用户)
  **/
 public enum DetailState {
     Reject(-1, "Your pickup request has been rejected."),

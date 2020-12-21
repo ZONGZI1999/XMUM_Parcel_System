@@ -16,7 +16,7 @@ public class index {
     //主页跳转
     @RequestMapping("/")
     public String indexPage() {
-        return "homepage";
+        return "homepage"; //试图解析器解析homepage.html
     }
 
 }

@@ -7,8 +7,6 @@ import online.zongzi.parcel.dto.Parcel_Details_To_Client;
 import online.zongzi.parcel.dto.Parcel_Info_To_Client;
 import online.zongzi.parcel.entity.Parcel_Details;
 import online.zongzi.parcel.entity.Parcel_Info;
-import online.zongzi.parcel.enums.ConsigneeState;
-import online.zongzi.parcel.enums.CurrentState;
 import online.zongzi.parcel.enums.DetailState;
 import online.zongzi.parcel.service.ParcelQuery;
 import org.springframework.beans.factory.annotation.Autowired;

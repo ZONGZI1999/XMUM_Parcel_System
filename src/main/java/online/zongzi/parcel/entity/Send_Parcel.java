@@ -8,14 +8,14 @@ import java.util.Date;
 /**
  * @Author: zongzi
  * @Date: 2020/12/17
- * @Description:
+ * @Description: 寄送包裹的类
  **/
 @Data
 @AllArgsConstructor
 public class Send_Parcel {
-    private Integer sendId;
-    private Integer userId;
-    private Date submitTime;
-    private Integer currentState;
-    private String address;
+    private Integer sendId; //发送编号
+    private Integer userId; //用户的ID
+    private Date submitTime; //提交时间
+    private Integer currentState; //当前状态
+    private String address; //地址
 }

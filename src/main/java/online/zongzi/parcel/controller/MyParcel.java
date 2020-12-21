@@ -49,20 +49,25 @@ public class MyParcel {
         get = get >= 1 && get <= 3 ? get : 3;
         //每页5条
 
-        int resultCount = parcelInfoDAO.countParcelByUserId(userId, get); //一共有多少结果
-        int maxPage = (int) Math.ceil(resultCount/5.00d); //根据结果算页数
+        try {
+            int resultCount = parcelInfoDAO.countParcelByUserId(userId, get); //一共有多少结果
+            int maxPage = (int) Math.ceil(resultCount/5.00d); //根据结果算页数
 
-        System.out.println(parcelQuery.queryAllParcel(userId, (page-1)*5, get));
+            System.out.println(parcelQuery.queryAllParcel(userId, (page-1)*5, get));
 
-        //数据校验
-        page = page<=maxPage && page>=1 ? page : 1;
-        //返回数据
-        model.addAttribute("userName", userDAO.queryUserInfo(userId)); //用户名
-        model.addAttribute("resultNumber", resultCount); //总共的页数
-        model.addAttribute("allParcel",parcelQuery.queryAllParcel(userId, (page-1)*5, get)); //包裹数据(分页后)
-        model.addAttribute("maxPage", maxPage); //最大页数
-        model.addAttribute("currentPage", page); //当前页数
-        model.addAttribute("get", get); //筛选数据
+            //数据校验
+            page = page<=maxPage && page>=1 ? page : 1;
+            //返回数据
+            model.addAttribute("userName", userDAO.queryUserInfo(userId)); //用户名
+            model.addAttribute("resultNumber", resultCount); //总共的页数
+            model.addAttribute("allParcel",parcelQuery.queryAllParcel(userId, (page-1)*5, get)); //包裹数据(分页后)
+            model.addAttribute("maxPage", maxPage); //最大页数
+            model.addAttribute("currentPage", page); //当前页数
+            model.addAttribute("get", get); //筛选数据
+        }catch (Exception e){
+            logger.warn("Database error");
+            model.addAttribute("message", "Database Error!"); //返回数据库错误
+        }
         return "myParcel";
     }
 }

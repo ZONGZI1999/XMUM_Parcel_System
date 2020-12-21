@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @Author: zongzi
  * @Date: 2020/12/15
- * @Description:
+ * @Description: 包裹代取的业务逻辑
  **/
 @Controller
 public class ParcelPickUp {
@@ -40,6 +40,7 @@ public class ParcelPickUp {
     @Autowired
     private ParcelInfoDAO parcelInfoDAO;
 
+    //获取包裹状态的数据库实例
     @Autowired
     private ParcelDetailsDAO parcelDetailsDAO;
 
@@ -47,61 +48,70 @@ public class ParcelPickUp {
     @Autowired
     private ParcelQuery parcelQuery;
 
-    @RequestMapping("/cancelOrRejectApply")
+    @RequestMapping("/cancelOrRejectApply") //取消或者拒绝代取
     public String cancelApply(HttpServletRequest httpServletRequest,
                               @RequestParam("parcelId") Integer parcelId){
-        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
         try{
-            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
-            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
+            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null); //获取最新状态
+            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId); //
             if (userId.equals(parcelInfo.getUserId()) &&
                     (parcelDetails.getState().equals(3) || parcelDetails.getState().equals(4))){
+                //如果是自己的包裹 并且处于申请代取 和 同意代取，这时候取消代取，就会记录为 申请人自己取消的代取
                 parcelDetailsDAO.insertNewRecord(parcelId, -2, userId);
                 parcelInfoDAO.updateConsignee(parcelId, 0);
             }
             if(userId.equals(parcelInfo.getConsigneeId()) && parcelDetails.getState().equals(4)) {
+                //如果自己是代取人 并且 已经同意代取的状态，这时候取消代取，就会记录为 代取人取消的代取
                 parcelDetailsDAO.insertNewRecord(parcelId, -2, userId);
                 parcelInfoDAO.updateConsignee(parcelId, 0);
             }
             if(userId.equals(parcelInfo.getConsigneeId()) && parcelDetails.getState().equals(3)) {
+                //如果自己是代取人 并且 处于申请状态，这时候取消代取， 就会记录为 代取人拒绝了申请
                 parcelDetailsDAO.insertNewRecord(parcelId, -1, userId);
                 parcelInfoDAO.updateConsignee(parcelId, 0);
             }
         }catch (Exception e) {
+            //发生错误, 不存在相应的parcel ID
             logger.warn("非法请求. 不存在该parcel ID");
         }
+        //重定向至 /parcelPickUp
         return "redirect:/parcelPickUp";
     }
 
-    @RequestMapping("/acceptApply")
+
+    @RequestMapping("/acceptApply") //同意代取
     public String acceptApply(HttpServletRequest httpServletRequest,
                               @RequestParam("parcelId") Integer parcelId){
-        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获取user ID
         try{
-            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
-            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
+            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null); //获取当前最新的状态
+            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId); //得到包裹最新的信息
             if(userId.equals(parcelInfo.getConsigneeId())
                     && (parcelDetails.getState().equals(3))){
+                //如果为代取人 并且 当前处于申请状态 那么如果同意代取 就会增加一项新的record
                 parcelDetailsDAO.insertNewRecord(parcelId, 4, userId);
             }
         }catch (Exception e) {
+            //发生错误, 不存在指定的parcel ID
             logger.warn("非法请求. 不存在该parcel ID: " + parcelId);
         }
+        //重定向至 /parcelPickUp
         return "redirect:/parcelPickUp";
     }
 
-    @RequestMapping(value = "/applyConsignee",method = RequestMethod.POST)
+    @RequestMapping(value = "/applyConsignee",method = RequestMethod.POST) //申请代取 POST 请求
     public String applyConsignee(HttpServletRequest httpServletRequest,
-                                 @RequestParam("parcelId") Integer parcelId,
-                                 @RequestParam("consigneeId") Integer consigneeId) {
-        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
+                                 @RequestParam("parcelId") Integer parcelId, //从用户获取 parcel ID
+                                 @RequestParam("consigneeId") Integer consigneeId) { //从用户获取 代取人ID
+        Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获取user ID
         try{
-            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null);
-            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId);
-            if(userId.equals(parcelInfo.getUserId())
-                    && (parcelDetails.getState() <= 0)){
-                parcelDetailsDAO.insertNewRecord(parcelId, 3, userId);
-                parcelInfoDAO.updateConsignee(parcelId, consigneeId);
+            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null); //获取最新的状态
+            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId); //得到info
+            if(userId.equals(parcelInfo.getUserId()) //如果是本人的包裹
+                    && (parcelDetails.getState() <= 0)){ //并且处于未代取的状态(<=0均为未代取的状态)
+                parcelDetailsDAO.insertNewRecord(parcelId, 3, userId); //新增一条record
+                parcelInfoDAO.updateConsignee(parcelId, consigneeId); //同时增加代取人的id
             }
         }catch (Exception e) {
             logger.warn("非法请求. 不存在该parcel ID: " + parcelId);

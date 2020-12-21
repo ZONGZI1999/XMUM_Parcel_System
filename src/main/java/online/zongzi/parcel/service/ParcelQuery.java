@@ -10,7 +10,7 @@ import java.util.List;
  * @Date: 2020/12/9
  * @Description:
  **/
-
+//Parcel Query的服务
 public interface ParcelQuery {
     List<Parcel_Info_To_Client> queryAllParcel(Integer userId, Integer offset, Integer currentState);
     List<Parcel_Details_To_Client> queryParcelDetails(Integer parcelId);

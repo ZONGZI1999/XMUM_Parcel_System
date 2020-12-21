@@ -8,21 +8,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @Author: zongzi
  * @Date: 2020/12/16
- * @Description:
+ * @Description: 拦截器
  **/
 @Configuration
 public class MyMvcConfig implements WebMvcConfigurer {
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer(){
-            //注册拦截器
+            //Filter
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
                 //super.addInterceptors(registry);
                 //静态资源；  *.css , *.js
                 //SpringBoot已经做好了静态资源映射
-                registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
-                        .excludePathPatterns("/","/public/**","/css/**","/js/**","/images/**");
+                registry.addInterceptor(new LoginHandlerInterceptor())
+                        .addPathPatterns("/**")
+                        .excludePathPatterns(
+                                "/",
+                                "/public/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**"
+                        );
             }
         };
     }

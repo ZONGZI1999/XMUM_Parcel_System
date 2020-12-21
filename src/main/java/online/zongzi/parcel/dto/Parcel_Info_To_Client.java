@@ -21,6 +21,8 @@ public class Parcel_Info_To_Client implements Serializable {
     private String userName;
     private String trackingNumber;
     /*
+     * -2 代取被取消
+     * -1 代取被拒绝
      * 0 (被快递站接收)
      * 1 (自己取件了)
      * 2 (异常件)

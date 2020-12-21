@@ -8,6 +8,7 @@
         from parcel_details
         where parcel_id = #{parcelId}
     </select>
+
     <select id="queryParcelStateTime" resultType="Parcel_Details">
         select parcel_id, detail_time, state, operator_id
         from parcel_details
@@ -23,6 +24,7 @@
         <if test="state == 0">and ((state<![CDATA[ <= ]]>0 or state=3 or state=4))</if>
         and parcel_id = #{parcelId}
     </select>
+
     <insert id="insertNewRecord">
         insert into parcel_details(parcel_id, state, operator_id)
         values

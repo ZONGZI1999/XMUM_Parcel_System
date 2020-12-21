@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 /**
  * @Author: zongzi
  * @Date: 2020/12/17
- * @Description:
+ * @Description: 储存返回用户登录结果的类
  **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResult {
-    private Boolean success;
-    private String msg;
+    private Boolean success; //是否成功
+    private String msg; //消息
 }

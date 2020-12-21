@@ -15,8 +15,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Parcel_Details {
-    private Integer parcelId;
-    private Date detailTime;
-    private Integer state;
-    private Integer operatorId;
+    private Integer parcelId; //parcel ID
+    private Date detailTime; //发生时间
+    private Integer state; //当前状态
+    private Integer operatorId; //操作员的ID
 }

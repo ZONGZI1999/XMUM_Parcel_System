@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @Author: zongzi
  * @Date: 2020/12/16
- * @Description:
+ * @Description: 拦截器
  **/
 public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Override

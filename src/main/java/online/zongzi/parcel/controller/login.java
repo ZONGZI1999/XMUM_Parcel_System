@@ -15,50 +15,51 @@ import javax.servlet.http.HttpSession;
 /**
  * @Author: zongzi
  * @Date: 2020/12/16
- * @Description:
+ * @Description: 登录
  **/
 @Controller
 @RequestMapping("/public")
 public class login {
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass()); //定义一个日志实例
 
-    @Autowired
-    private UserDAO userDAO;
+    @Autowired //自动注入
+    private UserDAO userDAO;  //数据库连接实例
 
 
-    @RequestMapping("/check")
+    @RequestMapping(value = "/check",method = RequestMethod.POST)
     @ResponseBody
     public LoginResult loginService(@RequestBody User userFromClient,
                                HttpServletRequest httpServletRequest){
-        System.out.println(userFromClient.getUserId() + '\n' + userFromClient.getPassword());
-        LoginResult loginResult = new LoginResult(false, "Login failed! Please try again!");
-        try{
-            User user = userDAO.queryUserInfo(userFromClient.getUserId());
-            if (user.getPassword().equals(userFromClient.getPassword())){
-                HttpSession httpSession = httpServletRequest.getSession();
-                httpSession.setAttribute("userId", userFromClient.getUserId());
-                loginResult.setSuccess(true);
-                loginResult.setMsg("Login successful! Please wait...");
-                return loginResult;
+        LoginResult loginResult = new LoginResult(false, "Login failed! Please try again!"); //定义一个返回登录结果的实例
+        try{ //进行数据库操作 使用try
+            User user = userDAO.queryUserInfo(userFromClient.getUserId()); //从数据库中获取用户输入的ID的用户信息
+            if (user.getPassword().equals(userFromClient.getPassword())){  //判断密码是否匹配
+                //如果密码匹配
+                HttpSession httpSession = httpServletRequest.getSession(); //获得Session
+                httpSession.setAttribute("userId", userFromClient.getUserId()); //将user ID放入Session中
+                loginResult.setSuccess(true); //将结果状态设置为成功
+                loginResult.setMsg("Login successful! Please wait..."); //设置成功的消息
+                return loginResult; //返回结果
             }
         } catch (Exception e){
-            logger.warn("No user has been found. (userId:" + userFromClient.getUserId() + ")");
+            //发生异常： user ID无法获取到用户的信息
+            logger.warn("No user has been found. (userId:" + userFromClient.getUserId() + ")"); //日志打印
         }
 
-        return loginResult;
+        return loginResult; //返回数据
     }
 
     @RequestMapping("/login")
     public String loginPage(HttpServletRequest httpServletRequest) {
-        if(httpServletRequest.getSession().getAttribute("userId") != null)
-            return "redirect:/myParcel";
-        return "index";
+        if(httpServletRequest.getSession().getAttribute("userId") != null) //用户已经登录
+            return "redirect:/"; //自动重定向到根目录("/")
+        return "index"; //用户没登录 视图解析器 View Resolver 将会解析 index.html
     }
     @RequestMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest) {
-        HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.removeAttribute("userId");
-        return "redirect:/";
+        HttpSession httpSession = httpServletRequest.getSession(); //获取Session
+        httpSession.removeAttribute("userId"); //将user ID从Session中移除
+        return "redirect:/"; //重定向至根目录("/")
     }
 }

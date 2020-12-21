@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private Integer userId;
-    private String fullName;
-    private String password;
+    private Integer userId; //用户的id
+    private String fullName; //用户的全名
+    private String password; //用户的密码
 }

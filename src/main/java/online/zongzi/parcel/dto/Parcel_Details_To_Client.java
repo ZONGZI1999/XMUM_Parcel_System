@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Parcel_Details_To_Client {
-    String detailTime;
-    String state;
-    String operatorName;
+    String detailTime; //状态发生时间
+    String state; //当前状态
+    String operatorName; //操作人的名字
 }
