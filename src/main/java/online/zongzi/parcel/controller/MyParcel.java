@@ -52,6 +52,7 @@ public class MyParcel {
         int resultCount = parcelInfoDAO.countParcelByUserId(userId, get); //一共有多少结果
         int maxPage = (int) Math.ceil(resultCount/5.00d); //根据结果算页数
 
+        System.out.println(parcelQuery.queryAllParcel(userId, (page-1)*5, get));
 
         //数据校验
         page = page<=maxPage && page>=1 ? page : 1;

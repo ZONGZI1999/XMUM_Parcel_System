@@ -81,13 +81,16 @@
             width:35%;
             height:100%;
             float:right;
-            font-size: 1.4em;
+            font-size: 1.6em;
             font-weight: 400;
             color: white;
             white-space: normal;
             overflow-wrap: break-word;
             margin-right: 33%;
             transition-duration: inherit;
+            border-radius: 15px;
+            letter-spacing:2px
+
         }
 
         .menu_button:hover
@@ -170,7 +173,9 @@
     <div class="half_section" id="right">
         <div class="spacing_alignment_box button_box">
             <div>
-                <input type="button" th:value="${session.get('userId')!= null ? 'UserID: ' + session.get('userId'): 'Login'}" class="menu_button button1 btn btn-primary" id="login" value="Login"> <!--color, background color and margin is unique to each button-->
+                <input type="button" th:value="${session.get('userId')!= null ? 'UserID: ' + session.get('userId'): 'Login'}"
+                       class="menu_button button1 btn btn-primary" id="login" value="Login">
+                <!--color, background color and margin is unique to each button-->
             </div>
         </div>
 
@@ -217,6 +222,9 @@
         $('#login').click(function(){
             window.location.href = [[@{'/public/login'}]];
         });
+        $('#learnMore').click(function () {
+            alert("Coming Soon!");
+        })
     })
 </script>
 </body>

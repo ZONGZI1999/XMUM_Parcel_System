@@ -14,15 +14,15 @@
   <body style="background-color: #424564">
 
     <!-- 导航栏 -->
-    <div class="container-fluid" >
-      <div class="container" style="background-color:#f5f5f5">
+    <div class="container-fluid" style="background-color: rgb(245,245,245);">
+      <div class="container">
         <nav class="navbar navbar-expand-lg">
           <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
               <div class="container">
                 <li class="nav-item">
                   <button type="button" id="parcelQuery"
-                          class="btn btn-primary" style="width: 150px; height:45px; font-size: large;">
+                          class="btn btn-primary " style="width: 150px; height:45px; font-size: large;">
                     Search
                   </button>
                 </li>
@@ -49,17 +49,13 @@
                 </li>
               </div>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
+            <form class="form-inline my-2 my-lg-0" th:if="${session['userId'] != null}">
               <div class="btn-group dropleft">
                 <button type="button" class="btn btn-info dropdown-toggle"
-                        style="width: 150px; height: 45px;"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                        th:text="${userName.getFullName()}">
+                        style="width: 150px; height: 45px;" id="logout"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Log Out
                 </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Settings</a>
-                  <a class="dropdown-item" th:href="@{'/public/logout'}">Log Out</a>
-                </div>
               </div>
             </form>
           </div>
@@ -67,12 +63,12 @@
       </div>
     </div>
     <!-- Logo栏 -->
-    <div class="container bg-white" style="padding: 5% 0% 5% 19.5%" >
-      <img th:src="@{'/images/logo_blue.png'}" style="width:65%" class="img-responsive center-block" >
+    <div class="container " style="padding: 5% 0% 5% 19.5%" >
+      <img th:src="@{'/images/logo_white.png'}" style="width:65%" class="img-responsive center-block" >
     </div>
   
     <!-- 我的包裹记录导航栏 -->
-    <div class="container bg-white">
+    <div class="container bg-white" style="margin-bottom: 3%; margin-top: 3%; border-radius: 15px; padding-top:10px;">
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" id="pickUpParcel">Parcel Pickups</a>
@@ -83,31 +79,27 @@
       </ul>
       <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
         <div class="tab-pane fade active show">
-          <!-- 标题 -->
-          <h3 style="padding-left: 30px; padding-right: 30px; margin-bottom: 40px; margin-top: 20px;">
-            ALL PARCELS
-          </h3>
           <!-- 表格 -->
           <table class="table table-hover">
             <thead>
             <tr>
-              <th scope="col">Tracking Number</th>
-              <th scope="col">Time</th>
-              <th scope="col">Current State</th>
-              <th scope="col">Operator</th>
-              <th scope="col">Owner</th>
-              <th scope="col">Consignee</th>
+              <th scope="col" style="vertical-align: middle;">Tracking Number</th>
+              <th scope="col" style="vertical-align: middle; text-align: center">Time</th>
+              <th scope="col" style="vertical-align: middle;">Current State</th>
+              <th scope="col" style="vertical-align: middle;">Operator</th>
+              <th scope="col" style="vertical-align: middle;">Owner</th>
+              <th scope="col" style="vertical-align: middle;">Consignee</th>
             </tr>
             </thead>
             <tbody>
             <tr  th:each="parcel:${allParcel}">
               <td th:text="${parcel.getTrackingNumber()}"></td>
-              <td th:text="${#dates.format(parcel.getCurrentStateTime(),'yyyy-MM-dd HH:mm:ss')}">12 December 2020</td>
+              <td style="text-align: center;" th:text="${#dates.format(parcel.getCurrentStateTime(),'yyyy-MM-dd HH:mm:ss')}">12 December 2020</td>
               <td th:text="${parcel.getCurrentStateByText()}"></td>
               <td th:text="${parcel.getOperatorName()}"></td>
               <td th:text="${parcel.getUserName()}"></td>
-              <td>
-                <div class="container" th:if="${parcel.getCurrentStateByNumber() le 0}">
+              <td style="text-align: center">
+                <div  class="container" th:if="${parcel.getCurrentStateByNumber() le 0}">
                   <button type="button" class="btn btn-info"
                           data-toggle="modal" data-target="#Consignee" id="consigneeButton"
                   th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} + ');'">Request for consignee pickup</button>
@@ -303,6 +295,10 @@
         $('#parcelPickUp').click(function(){
           window.location.href = [[@{'/parcelPickUp'}]];
         });
+        $('#logout').click(function () {
+          window.location.href = [[@{'/public/logout'}]]
+        })
+
       })
     </script>
   </body>
