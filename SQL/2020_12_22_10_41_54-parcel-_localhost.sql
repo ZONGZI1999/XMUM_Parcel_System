@@ -50,9 +50,7 @@ DROP TABLE IF EXISTS `parcel_info`;
 CREATE TABLE `parcel_info` (
   `parcel_id` int NOT NULL AUTO_INCREMENT COMMENT '包裹的id',
   `user_id` int DEFAULT NULL COMMENT '主用户的ID',
-  `tracking_number` varchar(20) COLLATE utf8mb4_general_ci NOT NULL COMMENT '包裹的单号',
-  `receive_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '入库时间',
-  `pick_up_time` datetime DEFAULT NULL COMMENT '取件时间',
+  `tracking_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '包裹的单号',
   `consignee_id` int DEFAULT '0' COMMENT '帮助取的人的ID 默认为0',
   PRIMARY KEY (`parcel_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -64,8 +62,34 @@ CREATE TABLE `parcel_info` (
 
 LOCK TABLES `parcel_info` WRITE;
 /*!40000 ALTER TABLE `parcel_info` DISABLE KEYS */;
-INSERT INTO `parcel_info` VALUES (1,1,'SF1000001','2020-12-09 16:34:52',NULL,0),(2,1,'SF1000002','2020-12-09 16:34:52','2020-12-09 17:34:52',0),(3,1,'SF1000003','2020-12-09 16:34:52',NULL,2),(4,2,'SF1000004','2020-12-11 16:34:52',NULL,0),(5,3,'123345','2020-12-16 17:09:52',NULL,0),(6,1,'aaaa','2020-12-16 17:13:44',NULL,0),(17,1,'test','2020-12-17 00:24:36',NULL,0);
+INSERT INTO `parcel_info` VALUES (1,1,'SF1000001',0),(2,1,'SF1000002',0),(3,1,'SF1000003',2),(4,2,'SF1000004',0),(5,3,'123345',0),(6,1,'aaaa',0),(17,1,'test',0);
 /*!40000 ALTER TABLE `parcel_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `send_parcel`
+--
+
+DROP TABLE IF EXISTS `send_parcel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `send_parcel` (
+  `send_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `submit_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `current_state` int DEFAULT NULL,
+  `address` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  PRIMARY KEY (`send_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `send_parcel`
+--
+
+LOCK TABLES `send_parcel` WRITE;
+/*!40000 ALTER TABLE `send_parcel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `send_parcel` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -78,6 +102,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Store User Info';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -88,7 +113,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (-1,'System'),(1,'ZHENG'),(2,'LIN'),(3,'ZIXI');
+INSERT INTO `user` VALUES (-1,'System',NULL),(1,'ZHENG','123'),(2,'LIN','123'),(3,'ZIXI','123');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -101,4 +126,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-17  0:33:28
+-- Dump completed on 2020-12-22 10:41:54
