@@ -56,8 +56,6 @@ public class ParcelQueryImpl implements ParcelQuery {
                     currentStateObject.getState(),
                     DetailState.stateOf(currentStateObject.getState()).getStateInfo(),
                     currentStateObject.getDetailTime(),
-                    parcelInfo.getReceiveTime(),
-                    parcelInfo.getPickUpTime(),
                     parcelInfo.getConsigneeId(),
                     parcelInfo.getConsigneeId().equals(0)?
                             null:

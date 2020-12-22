@@ -15,10 +15,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Parcel_Info {
-    private Integer parcelId; //包裹的ID
-    private Integer userId; //用户的ID
-    private String trackingNumber; //包裹查询的编号
-    private Date receiveTime; //入库时间
-    private Date pickUpTime;//取件时间
-    private Integer consigneeId; //代取人的ID 若无则为null
+    private Integer parcelId; //包裹的ID Parcel ID
+    private Integer userId; //用户的ID User ID
+    private String trackingNumber; //包裹查询的编号 Tracking Number
+    private Integer consigneeId; //代取人的ID(默认: 0) Consignee ID (default: 0)
 }

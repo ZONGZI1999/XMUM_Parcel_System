@@ -79,8 +79,15 @@
       </ul>
       <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
         <div class="tab-pane fade active show">
+
+          <div th:if="${resultNumber == 0}" class="text-warning" style="padding-bottom: 30px; margin-bottom: 10%;">
+            <div class="alert alert-danger">
+              <strong>Error:</strong> No result has been founded!
+            </div>
+          </div>
+
           <!-- 表格 -->
-          <table class="table table-hover">
+          <table th:if="${resultNumber != 0}" class="table table-hover">
             <thead>
             <tr>
               <th scope="col" style="vertical-align: middle;">Tracking Number</th>
@@ -126,7 +133,7 @@
             </tbody>
           </table>
           <!-- 分页 -->
-          <div class="container d-flex justify-content-center">
+          <div th:if="${resultNumber != 0}" class="container d-flex justify-content-center">
             <div>
               <ul class="pagination">
                 <li class="page-item" id="start">
@@ -225,13 +232,17 @@
       })
     </script>
     <script th:inline="javascript">
+
       function setParcelIdToInput(parcelIdFromUser){
         $('#parcelId').val(parcelIdFromUser);
       }
+
       $().ready(function (){
+
         //提示文字隐藏
         $('#consigneeId').hide();
         $('#submitText').hide();
+
         //搜索名字
         $('#consigneeName').blur(function (){
           $('#consigneeId').empty()
@@ -240,6 +251,7 @@
             $('#consigneeId').hide();
             return false;
           }
+          //ajax 获得名字检索结果
           $.ajax({
             //请求方式
             type : "GET",
@@ -275,6 +287,7 @@
           });
         })
 
+        //表单提交
         $("form").submit(function(e){
           if($('#consigneeId').val() === null) {
             $('#submitText').show()
@@ -283,8 +296,8 @@
             },2000);
             return false;
           }
-
         });
+        //页面跳转
         $('#myParcel').click(function () {
           window.location.href = [[@{'/myParcel'}]];
         })

@@ -86,29 +86,33 @@
         <h3 style="padding-left: 30px; padding-right: 30px; margin-bottom: 40px; margin-top: 20px;">
 
         </h3>
+
+        <div th:if="${resultNumber == 0}" class="text-warning" style="padding-bottom: 30px; margin-bottom: 10%;">
+          <div class="alert alert-danger">
+            <strong>Error:</strong> No result has been founded!
+          </div>
+        </div>
         <!-- 表格 -->
-        <table class="table table-hover">
+        <table th:if="${resultNumber != 0}" class="table table-hover">
           <thead>
             <tr>
               <th scope="col" style="vertical-align: middle;">Tracking Number</th>
-              <th scope="col" style="vertical-align: middle; text-align: center;">Time of arrival</th>
+              <th scope="col" style="vertical-align: middle; text-align: center;">Time</th>
               <th scope="col" style="vertical-align: middle;">Current Status</th>
               <th scope="col" style="vertical-align: middle;">Operator</th>
-              <th scope="col" style="vertical-align: middle;text-align: center;">Pick Up Time</th>
             </tr>
           </thead>
           <tbody>
             <tr  th:each="parcel:${allParcel}">
               <th style="vertical-align: middle;" scope="row" th:text="${parcel.getTrackingNumber()}"></th>
-              <td style="text-align: center;" th:text="${#dates.format(parcel.getReceiveTime(),'yyyy-MM-dd HH:mm')}">12 December 2020</td>
+              <td style="text-align: center;" th:text="${#dates.format(parcel.getCurrentStateTime(),'yyyy-MM-dd HH:mm')}">12 December 2020</td>
               <td th:text="${parcel.getCurrentStateByText()}"></td>
               <td style="vertical-align: middle;" th:text="${parcel.getOperatorName()}"></td>
-              <td style="text-align: center;" th:text="${#dates.format(parcel.getPickUpTime(),'yyyy-MM-dd HH:mm')}"></td>
             </tr>
           </tbody>
         </table>
         <!-- 分页 -->
-        <div class="container d-flex justify-content-center">
+        <div th:if="${resultNumber != 0}" class="container d-flex justify-content-center">
           <div>
             <ul class="pagination">
               <li class="page-item" id="start">

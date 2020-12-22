@@ -30,25 +30,32 @@ import java.util.List;
 public class ParcelPickUp {
 
     //日志打印
+    //Log print
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //获取用户信息的数据库实例
+    //instance of accessing database (table: user)
     @Autowired
     private UserDAO userDAO;
 
     //获取包裹信息的数据库实例
+    //instance of accessing database (table: parcelInfo)
     @Autowired
     private ParcelInfoDAO parcelInfoDAO;
 
     //获取包裹状态的数据库实例
+    //instance of accessing database (table: parcel details)
     @Autowired
     private ParcelDetailsDAO parcelDetailsDAO;
 
     //包裹增删改查的服务
+    //Parcel Info CRUD(Create, Retrieve, Update, Delete)
     @Autowired
     private ParcelQuery parcelQuery;
 
-    @RequestMapping("/cancelOrRejectApply") //取消或者拒绝代取
+    //取消或者拒绝代取
+    //Cancel or Reject
+    @RequestMapping("/cancelOrRejectApply")
     public String cancelApply(HttpServletRequest httpServletRequest,
                               @RequestParam("parcelId") Integer parcelId){
         Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
@@ -80,7 +87,9 @@ public class ParcelPickUp {
     }
 
 
-    @RequestMapping("/acceptApply") //同意代取
+    //同意代取
+    //Accept
+    @RequestMapping("/acceptApply")
     public String acceptApply(HttpServletRequest httpServletRequest,
                               @RequestParam("parcelId") Integer parcelId){
         Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获取user ID
@@ -100,7 +109,9 @@ public class ParcelPickUp {
         return "redirect:/parcelPickUp";
     }
 
-    @RequestMapping(value = "/applyConsignee",method = RequestMethod.POST) //申请代取 POST 请求
+    //申请代取 POST 请求
+    //Applying
+    @RequestMapping(value = "/applyConsignee",method = RequestMethod.POST)
     public String applyConsignee(HttpServletRequest httpServletRequest,
                                  @RequestParam("parcelId") Integer parcelId, //从用户获取 parcel ID
                                  @RequestParam("consigneeId") Integer consigneeId) { //从用户获取 代取人ID
@@ -134,25 +145,35 @@ public class ParcelPickUp {
         Integer userId = (Integer) httpServletRequest.getSession().getAttribute("userId");
         /*
          * 数据筛选:
-         *   0 代取的包裹(默认)
+         * get value: meaning
+         *   0 未取的包裹(默认)
+         *   0 unpick up parcel (default)
          *   2 异常包裹
+         *   2 abnormal parcel
          */
 
         //数据校验
+        //data validation
         get = get == 0 || get == 2 ? get : 0;
-        //每页5条
 
-        int resultCount = parcelInfoDAO.countParcelByUserId(userId, get); //一共有多少结果
-        int maxPage = (int) Math.ceil(resultCount/5.00d); //根据结果算页数
+
+        //一共有多少结果
+        //count total number result
+        int resultCount = parcelInfoDAO.countParcelByUserId(userId, get);
+        //根据结果算页数
+        //count total page we need (5 results per page)
+        int maxPage = (int) Math.ceil(resultCount/5.00d);
 
         //数据校验
+        //data validation
         page = page<=maxPage && page>=1 ? page : 1;
         //返回数据
-        model.addAttribute("userName", userDAO.queryUserInfo(userId)); //用户名
-        model.addAttribute("resultNumber", resultCount); //总共的页数
-        model.addAttribute("allParcel",parcelQuery.queryAllParcel(userId, (page-1)*5, get)); //包裹数据(分页后)
-        model.addAttribute("maxPage", maxPage); //最大页数
-        model.addAttribute("currentPage", page); //当前页数
+        //return result to user client.
+        model.addAttribute("userName", userDAO.queryUserInfo(userId)); //用户名 username
+        model.addAttribute("resultNumber", resultCount); //总共的数据数量 total number of result
+        model.addAttribute("allParcel",parcelQuery.queryAllParcel(userId, (page-1)*5, get)); //包裹数据(分页后) result(after paging)
+        model.addAttribute("maxPage", maxPage); //最大页数 max page
+        model.addAttribute("currentPage", page); //当前页数 current page
         model.addAttribute("get", get); //筛选数据
         return "parcelPickUp";
     }

@@ -90,7 +90,7 @@
                     </div>
                     <!-- 输入框 -->
                     <div class="form-group">
-                        <input class="form-control form-control-lg" type="text" placeholder="Ex. SF10000121123" id="trackingNumber"
+                        <input class="form-control form-control-lg" type="text" placeholder="Ex. 12345567" id="trackingNumber"
                         style="margin-bottom: 20px;">
                     <div class="invalid-feedback">Please enter tracking number</div>
                     </div>
@@ -126,7 +126,7 @@
   
 
     <!-- 页脚 -->
-    <footer class="container-fluid" style="background-color: rgb(51, 51, 51); padding-bottom: 50px; padding-top: 10px; bottom: 0; position:absolute;">
+    <footer class="container-fluid" style="background-color: rgb(51, 51, 51); padding-bottom: 50px; padding-top: 10px; ">
       <div class="container text-white text-center">
         <h4>XMUM STUDENT WORKS</h4>
       </div>
@@ -139,13 +139,24 @@
       $().ready(function(){
         //Javascript
 
+          jQuery.fn.shake = function (intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
+              this.each(function () {
+                  var jqNode = $(this);
+                  jqNode.css({ position: 'relative' });
+                  for (var x = 1; x <= intShakes; x++) {
+                      jqNode.animate({ left: (intDistance * -1) }, (((intDuration / intShakes) / 4)))
+                          .animate({ left: intDistance }, ((intDuration / intShakes) / 2))
+                          .animate({ left: 0 }, (((intDuration / intShakes) / 4)));
+                  }
+              });
+              return this;
+          }
         // 输入框被唤醒
         $('#trackingNumber').blur(function(){
             if($('#trackingNumber').val() === "") {
                 $('#trackingNumber').addClass('is-invalid')
                 $('#okButton').removeClass('btn-outline-info')
                 $('#okButton').addClass('btn-outline-danger')
-                
             } else {
                 $('#trackingNumber').removeClass('is-invalid')
                 $('#okButton').removeClass('btn-outline-danger')
@@ -154,14 +165,21 @@
         });
 
         //判断输入的是否为空
-        $('#okButton').click(function() {
+        $('#okButton').click(function(event) {
+
             var result = $('#trackingNumber').val();
             if(result === "") {
                 $('#trackingNumber').addClass('is-invalid')
+                $('#okButton').removeClass('btn-outline-info')
+                $('#okButton').addClass('btn-outline-danger')
+                $('#trackingNumber').shake(10,10,100)
+                $('#okButton').shake(10,10,100)
                 return false;
             }
             $('#trackingNumber').val("") //清空
             $('#resultText').empty();
+            $('#resultText').removeClass('alert');
+            $('#resultText').removeClass('alert-danger');
             $.ajax({
                 //请求方式
                 type : "GET",
@@ -193,9 +211,11 @@
                             "</table>";
                         $('#resultText').append(html);
                     } else if(result['empty']) {
-                        $('#resultText').addClass('text-danger');
-                        $('#resultText').addClass('display-4');
-                        $('#resultText').text("No result has been found!");
+                        $('#resultText').addClass('alert');
+                        $('#resultText').addClass('alert-danger');
+                        $('#resultText').append("<strong>Error</strong>: No result has been found!");
+                        that.event.preventDefault();
+                        that.event.stopPropagation();
                     } else if(!result['success']) {
                         $('#resultText').text("Server Error!");
                     }
@@ -209,6 +229,7 @@
                 }
             });
         });
+        //页面跳转
           $('#myParcel').click(function () {
               window.location.href = [[@{'/myParcel'}]];
           })

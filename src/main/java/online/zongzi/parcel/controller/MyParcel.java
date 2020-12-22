@@ -59,7 +59,7 @@ public class MyParcel {
             page = page<=maxPage && page>=1 ? page : 1;
             //返回数据
             model.addAttribute("userName", userDAO.queryUserInfo(userId)); //用户名
-            model.addAttribute("resultNumber", resultCount); //总共的页数
+            model.addAttribute("resultNumber", resultCount); //总共的结果数量
             model.addAttribute("allParcel",parcelQuery.queryAllParcel(userId, (page-1)*5, get)); //包裹数据(分页后)
             model.addAttribute("maxPage", maxPage); //最大页数
             model.addAttribute("currentPage", page); //当前页数
