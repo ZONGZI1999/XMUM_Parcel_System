@@ -39,11 +39,8 @@
 
     <!--删除包裹-->
     <delete id="deleteParcel">
-        delete from parcel_details
-        where parcel_id = #{parcel_id};
-
-        delete from parcel_info
-        where parcel_id = #{parcel_id};
+        delete from parcel_details where parcel_id = #{parcelId};
+        delete from parcel_info where parcel_id = #{parcelId};
     </delete>
 
 </mapper>

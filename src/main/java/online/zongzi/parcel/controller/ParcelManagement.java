@@ -64,7 +64,7 @@ public class ParcelManagement {
             parcelManagementDAO.insertIntoInfo(parcelInfo);
             parcelManagementDAO.insertIntoDetails(parcelInfo.getParcelId(), currentUserId);
             result.setSuccess(true);
-            result.setMsg("Success");
+            result.setMsg("Success!");
         } else {
             result.setMsg("Tracking Number duplicate!");
         }
@@ -97,7 +97,7 @@ public class ParcelManagement {
 
             //数据校验
             //data validation
-            get = get == 0 || get == 2 ? get : 0;
+            get = get == 0 || get == 2 || get ==3 ? get : 3;
 
 
             //一共有多少结果
@@ -126,8 +126,9 @@ public class ParcelManagement {
     @RequestMapping("/pickUp")
     @ResponseBody
     public void parcelPickUp(HttpServletRequest httpServletRequest,
-                               @RequestParam Integer parcelId,
-                               @RequestParam Integer userId){
+                             @RequestParam Integer parcelId,
+                             @RequestParam Integer userId,
+                             @RequestParam(defaultValue = "0", required = false) Integer state){
         System.out.println(httpServletRequest.getPathInfo());
         Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
         Parcel_Details parcelDetails = null;
@@ -135,13 +136,28 @@ public class ParcelManagement {
         try {
             parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelId, null); //获取最新状态
             parcelInfo = parcelInfoDAO.queryParcelInfo(parcelId); //
-            if(!(parcelDetails.getState().equals(1) || parcelDetails.getState().equals(5))){
-                if (parcelInfo.getConsigneeId().equals(userId)){ //代取的
-                    parcelManagementDAO.pickUpByConsignee(parcelId, currentUserId);
-                } else if (parcelInfo.getUserId().equals(userId)) {
-                    parcelManagementDAO.pickUpBySelf(parcelId, currentUserId);
-                }
+            switch (state){
+                case 0:
+                    if(!(parcelDetails.getState().equals(1) || parcelDetails.getState().equals(5))){
+                        if (parcelInfo.getConsigneeId().equals(userId)){ //代取的
+                            parcelManagementDAO.pickUpByConsignee(parcelId, currentUserId);
+                        } else if (parcelInfo.getUserId().equals(userId)) {
+                            parcelManagementDAO.pickUpBySelf(parcelId, currentUserId);
+                        }
+                    }
+                    break;
+                case 1:
+                    if (parcelInfo.getUserId().equals(userId)) { //自己的
+                        parcelManagementDAO.abnormalParcel(parcelId, currentUserId);
+                    }
+                    break;
+                case 2:
+                    if (parcelInfo.getUserId().equals(userId)) { //自己的
+                        parcelManagementDAO.deleteParcel(parcelId);
+                    }
+                    break;
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }

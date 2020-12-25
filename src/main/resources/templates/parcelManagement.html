@@ -133,6 +133,9 @@
     <div th:if="${userInfo != null}" class="container bg-white" style="border-radius: 15px; padding-top:30px;" >
         <ul class="nav nav-tabs">
             <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" id="allParcel">All Parcel</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" id="pickUpParcel">Parcel Pickups</a>
             </li>
             <li class="nav-item">
@@ -162,22 +165,34 @@
                     </thead>
                     <tbody>
                     <tr th:each="parcel:${allParcel}">
-                        <td th:text="${parcel.getTrackingNumber()}"></td>
-                        <td style="text-align: center;"
+                        <td style="vertical-align: middle;" th:text="${parcel.getTrackingNumber()}"></td>
+                        <td style="text-align: center; vertical-align: middle;"
                             th:text="${#dates.format(parcel.getCurrentStateTime(),'yyyy-MM-dd HH:mm:ss')}">12 December 2020
                         </td>
-                        <td th:text="${parcel.getCurrentStateByText()}"></td>
-                        <td th:text="${parcel.getOperatorName()}"></td>
-                        <td th:text="${parcel.getUserName()}"></td>
-                        <td style="text-align: center">
-                            <div class="container">
-                                <button type="button" class="btn btn-info" id="pickUpButton"
-                                        th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} +',' + ${userInfo.getUserId()} + ')'">Pick Up
+                        <td style="vertical-align: middle;" th:text="${parcel.getCurrentStateByText()}"></td>
+                        <td style="vertical-align: middle;" th:text="${parcel.getOperatorName()}"></td>
+                        <td style="vertical-align: middle;" th:text="${parcel.getUserName()}"></td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <div class="container" th:if="${parcel.getCurrentStateByNumber() != 1 and parcel.getCurrentStateByNumber() != 5}">
+                                <button type="button" style="margin: 10px" class="btn btn-info" id="pickUpButton"
+                                        th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} +',' + ${userInfo.getUserId()} +',0'+ ')'">Pick Up
                                 </button>
-                                <!--还未实现, 明天加-->
-                                <button type="button" class="btn btn-danger" id="abnormalButton"
-                                        th:if="${parcel.getUserId() == userInfo.getUserId()}">Abnormal / Delete
-                                </button>
+                                    <div th:if="${parcel.getUserId() == userInfo.getUserId()}" class="btn-group" role="group">
+                                        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Other
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                            <a class="dropdown-item"
+                                               th:if="${parcel.getCurrentStateByNumber() != 2}"
+                                               th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} +',' + ${userInfo.getUserId()} +',1'+ ')'"
+                                               href="javascript:void(0)">Abnormal</a>
+                                            <a class="dropdown-item"
+                                               th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} +',' + ${userInfo.getUserId()} +',2'+ ')'"
+                                               href="javascript:void(0)">Delete</a>
+                                        </div>
+                                    </div>
+
                             </div>
                         </td>
                     </tr>
@@ -253,10 +268,17 @@
             case 0:
                 $('#pickUpParcel').addClass('active');
                 $('#abnormal').removeClass('active');
+                $('#allParcel').removeClass('active');
                 break;
             case 2:
                 $('#abnormal').addClass('active');
                 $('#pickUpParcel').removeClass('active');
+                $('#allParcel').removeClass('active');
+                break;
+            case 3:
+                $('#allParcel').addClass('active');
+                $('#pickUpParcel').removeClass('active');
+                $('#abnormal').removeClass('active');
                 break;
             default:
                 break;
@@ -267,6 +289,9 @@
         })
         $('#abnormal').click(function () {
             window.location.href = [[@{'/admin/parcelManagement?get=2'}]] + '&userId=' + [[${userInfo.getUserId()} ]];
+        })
+        $('#allParcel').click(function () {
+            window.location.href = [[@{'/admin/parcelManagement?get=3'}]] + '&userId=' + [[${userInfo.getUserId()} ]];
         })
 
     })
@@ -334,30 +359,31 @@
 </script>
 <!--代取操作-->
 <script>
-    function setParcelIdToInput(parcelIdFromUser, userId) {
-        $.ajax({
-            //请求方式
-            type: "GET",
-            //请求地址
-            url: "[[@{'/admin/pickUp'}]]",
-            data: {
-                'parcelId' :parcelIdFromUser,
-                'userId' : userId,
-            },
-            //请求成功
-            success: function (result) {
-                console.log(result)
-                setTimeout(function (){
-                    var path = window.location.href;
-                    window.location.href =  path;
-                },0)
-            },
-            //请求失败，包含具体的错误信息
-            error: function (e) {
-                console.log(e.status);
-                console.log(e.responseText);
-            }
-        });
+    function setParcelIdToInput(parcelIdFromUser, userId, state) {
+        if (confirm("Are you sure? \n")) {
+            $.ajax({
+                //请求方式
+                type: "GET",
+                //请求地址
+                url: "[[@{'/admin/pickUp'}]]",
+                data: {
+                    'parcelId' :parcelIdFromUser,
+                    'userId' : userId,
+                    'state': state
+                },
+                //请求成功
+                success: function (result) {
+                    console.log(result)
+                    location.reload()
+                },
+                //请求失败，包含具体的错误信息
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        }
+
 
     }
 </script>
