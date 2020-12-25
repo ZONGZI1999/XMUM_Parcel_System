@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="online.zongzi.parcel.dao.ParcelManagementDAO">
+
+    <insert id="insertIntoInfo" useGeneratedKeys="true" parameterType="Parcel_Info" keyProperty="parcelId">
+        insert into parcel_info (user_id, tracking_number)
+        VALUES (#{userId}, #{trackingNumber});
+    </insert>
+
+    <insert id="insertIntoDetails">
+    insert into parcel_details(parcel_id, state, operator_id)
+    values
+    (#{parcelId}, 0, #{operatorId})
+    </insert>
+
+    <!--自己已经领取-->
+    <insert id="pickUpBySelf">
+        insert into parcel_details(parcel_id, state, operator_id)
+        values
+        (#{parcelId}, 1, #{operatorId})
+    </insert>
+
+    <!--consignee已经领取-->
+    <update id="pickUpByConsignee">
+        insert into parcel_details(parcel_id, state, operator_id)
+        values
+        (#{parcelId}, 5, #{operatorId})
+    </update>
+
+    <!--包裹异常-->
+    <update id="abnormalParcel">
+        insert into parcel_details(parcel_id, state, operator_id)
+        values
+        (#{parcelId}, 2, #{operatorId})
+    </update>
+
+    <!--删除包裹-->
+    <delete id="deleteParcel">
+        delete from parcel_details
+        where parcel_id = #{parcel_id};
+
+        delete from parcel_info
+        where parcel_id = #{parcel_id};
+    </delete>
+
+</mapper>
+
+

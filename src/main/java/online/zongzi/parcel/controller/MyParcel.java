@@ -65,6 +65,7 @@ public class MyParcel {
             model.addAttribute("currentPage", page); //当前页数
             model.addAttribute("get", get); //筛选数据
         }catch (Exception e){
+            e.printStackTrace();
             logger.warn("Database error");
             model.addAttribute("message", "Database Error!"); //返回数据库错误
         }

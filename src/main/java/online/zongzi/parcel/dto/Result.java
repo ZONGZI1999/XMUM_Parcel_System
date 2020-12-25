@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResult {
+public class Result {
     private Boolean success; //是否成功
     private String msg; //消息
 }

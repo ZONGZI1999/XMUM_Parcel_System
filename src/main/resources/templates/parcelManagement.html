@@ -1,0 +1,363 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/css/bootstrap.min.css'}">
+    <link rel="stylesheet" th:href="@{'/css/buttonStyle.css'}">
+    <title>Parcel Management</title>
+</head>
+
+<body style="background-color: #424564">
+
+<!-- 导航栏 -->
+<div class="container-fluid" style="background: rgb(246, 246, 246);">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg">
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <div class="container">
+                        <li class="nav-item">
+                            <button type="button" id="parcelRegistration"
+                                    class="btn btn-primary" style="width: 200px; height:45px; font-size: large;">
+                                Parcel Registration
+                            </button>
+                        </li>
+                    </div>
+
+                    <div class="container">
+                        <li class="nav-item">
+                            <button type="button" id="parcelManagement"
+                                    class="btn btn-primary active"
+                                    style="width: 200px; height: 45px; font-size: large;">Parcel Management
+                            </button>
+                        </li>
+                    </div>
+
+                    <div class="container">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-primary"
+                                    style="width: 150px; height: 45px; font-size: large;">Mailing Parcels
+                            </button>
+                        </li>
+                    </div>
+
+
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="btn-group dropleft">
+                        <button type="button" class="btn btn-info dropdown-toggle"
+                                style="width: 150px; height: 45px;"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Log out
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<!-- Logo栏 -->
+<div class="container">
+    <img th:src="@{'/images/logo_white.png'}"
+         style="width:70%; margin-left: 15%; margin-top: 20px; margin-bottom: 10px;"
+         class="img-responsive center-block">
+</div>
+<!-- 查询学生-->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="container" style="
+                  border-style: solid; 
+                  border-width: 5px; 
+                  border-color: rgb(54, 55, 59);
+                  margin-top: 35px;
+                  padding-top: 30px;
+                  padding-bottom: 30px;
+                  border-radius: 15px;
+                  background-color: #e0dfdf">
+                <h3 class="text-center">
+
+                    Enquiry on Parcels of Students </h3>
+                <!-- 名字输入框 -->
+                <div class="text-center" style="margin-bottom: 20px;">
+                    Enter the student name
+                </div>
+
+                <!-- 学生id输入框 -->
+                <div class="form-group">
+                    <input class="form-control form-control-lg" type="text" placeholder="Enter Student Name"
+                           id="consigneeName"
+                           style="margin-bottom: 20px;">
+                    <div class="invalid-feedback">No result has been found!</div>
+                </div>
+                <select name="consigneeId" style="margin-bottom: 20px;" class="form-control form-control-l"
+                        id="consigneeId">
+                </select>
+                <div id="resultText"></div>
+                <div class="container d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-info"
+                            style="text-align:center; width: 100px; font-size: 20;" id="okButton">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- photo栏 -->
+<!--  <div class="container" style=" max-width: 35rem; margin-top: 20px; margin-bottom: 20px;">
+
+    <div class="card" >
+      <div class="card-header">Student</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col"> <img src="images/photoimage.png" alt=""></div>
+          <div class="col">
+            <h4 class="card-text">WANG YILIN</h4>
+            <p class="card-text">SWE1809375</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>-->
+<!-- 学生的包裹记录导航栏 -->
+<div style="margin-bottom: 3%; margin-top: 3%; ">
+    <div th:if="${userInfo != null}" class="container bg-white" style="border-radius: 15px; padding-top:30px;" >
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" id="pickUpParcel">Parcel Pickups</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" id="abnormal">Abnormal Parcels</a>
+            </li>
+        </ul>
+        <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
+            <div class="tab-pane fade active show">
+
+                <div th:if="${resultNumber == 0}" class="text-warning" style="padding-bottom: 30px; margin-bottom: 10%;">
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> No result has been founded!
+                    </div>
+                </div>
+
+                <!-- 表格 -->
+                <table th:if="${resultNumber != 0}" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="vertical-align: middle;">Tracking Number</th>
+                        <th scope="col" style="vertical-align: middle; text-align: center">Time</th>
+                        <th scope="col" style="vertical-align: middle;">Current State</th>
+                        <th scope="col" style="vertical-align: middle;">Operator</th>
+                        <th scope="col" style="vertical-align: middle;">Owner</th>
+                        <th scope="col" style="vertical-align: middle; text-align: center">Pick Up</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="parcel:${allParcel}">
+                        <td th:text="${parcel.getTrackingNumber()}"></td>
+                        <td style="text-align: center;"
+                            th:text="${#dates.format(parcel.getCurrentStateTime(),'yyyy-MM-dd HH:mm:ss')}">12 December 2020
+                        </td>
+                        <td th:text="${parcel.getCurrentStateByText()}"></td>
+                        <td th:text="${parcel.getOperatorName()}"></td>
+                        <td th:text="${parcel.getUserName()}"></td>
+                        <td style="text-align: center">
+                            <div class="container">
+                                <button type="button" class="btn btn-info"
+                                        data-toggle="modal" data-target="#Consignee" id="consigneeButton"
+                                        th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} +',' + ${userInfo.getUserId()} + ')'">Pick Up
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- 分页 -->
+                <div th:if="${resultNumber != 0}" class="container d-flex justify-content-center">
+                    <div>
+                        <ul class="pagination">
+                            <li class="page-item" id="start">
+                                <a class="page-link"
+                                   th:href="@{'/admin/parcelManagement?get=' + ${get} +'&page=' + ${currentPage - 1 }} + '&userId=' + ${userInfo.getUserId()}">&laquo;</a>
+                            </li>
+                            <li class="page-item" th:id="'all-page-' + ${i}" th:each="i:${#numbers.sequence(1,maxPage)}">
+                                <a class="page-link" th:href="@{'/admin/parcelManagement?get=' + ${get} +'&page=' + ${i}} + '&userId=' + ${userInfo.getUserId()}"
+                                   th:text="${i}">1</a>
+                            </li>
+                            <li class="page-item" id="end">
+                                <a class="page-link"
+                                   th:href="@{'/admin/parcelManagement?get=' + ${get} +'&page=' + ${currentPage + 1 }} + '&userId=' + ${userInfo.getUserId()}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<footer style="background-color: rgb(51, 51, 51); padding-bottom: 50px; padding-top: 10px; margin-top: 40px;">
+    <div class="container text-white text-center">
+        <h4>XMUM STUDENT WORKS</h4>
+    </div>
+</footer>
+
+<!-- Javascript -->
+<script th:src="@{'/js/jquery-3.5.1.min.js'}"></script>
+<script th:src="@{'/js/bootstrap.bundle.min.js'}"></script>
+
+<script th:inline="javascript">
+    $().ready(function (){
+        $('#parcelRegistration').click(function () {
+            window.location.href = [[@{'/admin/parcelReg'}]];
+        })
+        $('#parcelManagement').click(function (){
+            window.location.href = [[@{'/admin/parcelManagement'}]];
+        })
+    })
+
+</script>
+
+<!--分页等操作-->
+<script th:if="${userInfo != null}" th:inline="javascript">
+    $().ready(function () {
+        //Javascript
+        $("#consigneeName").val([[${userInfo.getFullName()}]]);
+        var currentPage = [[${currentPage}]];
+        console.log(currentPage);
+        var maxPage = [[${maxPage}]];
+        console.log(maxPage)
+        if (maxPage === currentPage) {
+            $("#end").addClass('disabled');
+        }
+        if (currentPage === 1) {
+            $('#start').addClass('disabled');
+        }
+        $("#all-page-" + currentPage).addClass('active');
+
+        switch ([[${get}]]) {
+            case 0:
+                $('#pickUpParcel').addClass('active');
+                $('#abnormal').removeClass('active');
+                break;
+            case 2:
+                $('#abnormal').addClass('active');
+                $('#pickUpParcel').removeClass('active');
+                break;
+            default:
+                break;
+        }
+
+        $('#pickUpParcel').click(function () {
+            window.location.href = [[@{'/admin/parcelManagement?get=0'}]]+ '&userId=' +[[${userInfo.getUserId()}]];
+        })
+        $('#abnormal').click(function () {
+            window.location.href = [[@{'/admin/parcelManagement?get=2'}]] + '&userId=' + [[${userInfo.getUserId()} ]];
+        })
+
+    })
+</script>
+<!--名字查找-->
+<script th:inline="javascript">
+    $().ready(function () {
+        //Javascript
+        $("#consigneeId").hide()
+        $('#consigneeName').blur(function () {
+            $('#consigneeId').empty()
+            if ($('#consigneeName').val() == "") {
+                $('#consigneeName').addClass('is-invalid');
+                $('#consigneeId').hide();
+                return false;
+            }
+            //ajax 获得名字检索结果
+            $.ajax({
+                //请求方式
+                type: "GET",
+                //请求地址
+                url: "[[@{'/userInfo?fullName='}]]",
+                data: {
+                    'fullName' : $('#consigneeName').val()
+                },
+                //请求成功
+                success: function (result) {
+                    var html = "";
+                    if (result.length > 0) {
+                        console.log(result.length)
+                        result.forEach(function (detail) {
+                            html += "<option value=\"" + detail['userId'] + "\">" + detail['fullName'] + ' (ID: ' + detail['userId'] + " )</option>";
+                        })
+                    }
+                    if (html === "") {
+                        $('#consigneeName').addClass('is-invalid');
+                        $('#consigneeId').hide();
+                    } else {
+                        $('#consigneeName').removeClass('is-invalid');
+                        $('#consigneeId').show();
+                    }
+                    $('#consigneeId').append(html);
+                    console.log(result)
+                },
+                //请求失败，包含具体的错误信息
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            });
+        })
+    })
+</script>
+<!--名字提交-->
+<script th:inline="javascript">
+    $().ready(function (){
+        $("#okButton").click(function (){
+            if ($("#consigneeId").val() === "" || $("#consigneeId").val() ===null){
+                return false;
+            }else {
+                window.location.href = [[@{'/admin/parcelManagement?userId='}]] + $("#consigneeId").val();
+            }
+        })
+    })
+</script>
+<!--代取操作-->
+<script>
+    function setParcelIdToInput(parcelIdFromUser, userId) {
+        $.ajax({
+            //请求方式
+            type: "GET",
+            //请求地址
+            url: "[[@{'/admin/pickUp'}]]",
+            data: {
+                'parcelId' :parcelIdFromUser,
+                'userId' : userId,
+            },
+            //请求成功
+            success: function (result) {
+                console.log(result)
+                setTimeout(function (){
+                    var path = window.location.href;
+                    window.location.href =  path;
+                },0)
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+
+    }
+</script>
+</body>
+
+</html>

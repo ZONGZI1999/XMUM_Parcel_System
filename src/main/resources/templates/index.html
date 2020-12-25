@@ -95,7 +95,8 @@
                             $('#submitButton').hide()
                             $('#message').text(result['msg']);
                             setTimeout(function (){
-                                window.location.href = [[@{'/'}]]
+                                var path = window.location.href;
+                                window.location.href =  path;
                             },500)
                         } else {
                             $('#message').empty()
