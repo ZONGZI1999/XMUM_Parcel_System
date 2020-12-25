@@ -5811,3 +5811,22 @@ org.apache.ibatis.binding.BindingException: Parameter 'userId' not found. Availa
 2020/12/25-21:20:29 [SpringContextShutdownHook] INFO  org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor- Shutting down ExecutorService 'applicationTaskExecutor'
 2020/12/25-21:20:29 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource- HikariPool-1 - Shutdown initiated...
 2020/12/25-21:20:29 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource- HikariPool-1 - Shutdown completed.
+2020/12/25-21:32:42 [main] INFO  online.zongzi.parcel.ParcelApplication- Starting ParcelApplication using Java 1.8.0_241 on azongdeMacBook-Pro.local with PID 12751 (/Users/zongzi/Semester 202009/Java EE/Parcel_System_BackEnd/target/classes started by zongzi in /Users/zongzi/Semester 202009/Java EE/Parcel_System_BackEnd)
+2020/12/25-21:32:42 [main] INFO  online.zongzi.parcel.ParcelApplication- No active profile set, falling back to default profiles: default
+2020/12/25-21:32:42 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer- Tomcat initialized with port(s): 8899 (http)
+2020/12/25-21:32:42 [main] INFO  org.apache.catalina.core.StandardService- Starting service [Tomcat]
+2020/12/25-21:32:42 [main] INFO  org.apache.catalina.core.StandardEngine- Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020/12/25-21:32:42 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]- Initializing Spring embedded WebApplicationContext
+2020/12/25-21:32:42 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext- Root WebApplicationContext: initialization completed in 735 ms
+2020/12/25-21:32:43 [main] INFO  org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor- Initializing ExecutorService 'applicationTaskExecutor'
+2020/12/25-21:32:43 [main] INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping- Adding welcome page template: index
+2020/12/25-21:32:43 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer- Tomcat started on port(s): 8899 (http) with context path ''
+2020/12/25-21:32:43 [main] INFO  online.zongzi.parcel.ParcelApplication- Started ParcelApplication in 1.536 seconds (JVM running for 2.12)
+2020/12/25-21:32:59 [http-nio-8899-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]- Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020/12/25-21:32:59 [http-nio-8899-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet- Initializing Servlet 'dispatcherServlet'
+2020/12/25-21:32:59 [http-nio-8899-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet- Completed initialization in 0 ms
+2020/12/25-21:33:04 [http-nio-8899-exec-4] INFO  com.zaxxer.hikari.HikariDataSource- HikariPool-1 - Starting...
+2020/12/25-21:33:04 [http-nio-8899-exec-4] INFO  com.zaxxer.hikari.HikariDataSource- HikariPool-1 - Start completed.
+2020/12/25-21:43:08 [SpringContextShutdownHook] INFO  org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor- Shutting down ExecutorService 'applicationTaskExecutor'
+2020/12/25-21:43:08 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource- HikariPool-1 - Shutdown initiated...
+2020/12/25-21:43:08 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource- HikariPool-1 - Shutdown completed.

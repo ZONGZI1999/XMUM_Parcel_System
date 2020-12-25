@@ -171,9 +171,12 @@
                         <td th:text="${parcel.getUserName()}"></td>
                         <td style="text-align: center">
                             <div class="container">
-                                <button type="button" class="btn btn-info"
-                                        data-toggle="modal" data-target="#Consignee" id="consigneeButton"
+                                <button type="button" class="btn btn-info" id="pickUpButton"
                                         th:onclick="'setParcelIdToInput('+ ${parcel.getParcelId()} +',' + ${userInfo.getUserId()} + ')'">Pick Up
+                                </button>
+                                <!--还未实现, 明天加-->
+                                <button type="button" class="btn btn-danger" id="abnormalButton"
+                                        th:if="${parcel.getUserId() == userInfo.getUserId()}">Abnormal / Delete
                                 </button>
                             </div>
                         </td>
@@ -285,7 +288,7 @@
                 //请求方式
                 type: "GET",
                 //请求地址
-                url: "[[@{'/userInfo?fullName='}]]",
+                url: [[@{'/userInfo'}]],
                 data: {
                     'fullName' : $('#consigneeName').val()
                 },
