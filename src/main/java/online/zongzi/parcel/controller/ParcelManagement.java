@@ -68,7 +68,7 @@ public class ParcelManagement {
             result.setSuccess(true);
             result.setMsg("Success!");
         } else {
-            result.setMsg("Tracking Number duplicate!");
+            result.setMsg("Duplicate tracking number.");
         }
         return result;
     }
