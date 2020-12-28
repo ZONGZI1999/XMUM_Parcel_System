@@ -69,16 +69,12 @@
   
     <!-- 我的包裹记录导航栏 -->
     <div class="container bg-white" style="margin-bottom: 3%; margin-top: 3%; border-radius: 15px; padding-top:10px;">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" id="pickUpParcel">Parcel Pickups</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" id="abnormal">Abnormal Parcels</a>
-        </li>
-      </ul>
+
       <div id="myTabContent" class="tab-content" style="margin-top: 10px;">
         <div class="tab-pane fade active show">
+          <h3 style="margin-bottom: 20px">
+            All parcels ready to pick up:
+          </h3>
 
           <div th:if="${resultNumber == 0}" class="text-warning" style="padding-bottom: 30px; margin-bottom: 10%;">
             <div class="alert alert-danger">
@@ -208,27 +204,6 @@
           $('#start').addClass('disabled');
         }
         $("#all-page-" + currentPage).addClass('active');
-
-        switch ([[${get}]]) {
-          case 0:
-            $('#pickUpParcel').addClass('active');
-            $('#abnormal').removeClass('active');
-            break;
-          case 2:
-            $('#abnormal').addClass('active');
-            $('#pickUpParcel').removeClass('active');
-            break;
-          default:
-            break;
-        }
-
-        $('#pickUpParcel').click(function () {
-          window.location.href = [[@{'/parcelPickUp?get=0'}]];
-        })
-        $('#abnormal').click(function () {
-          window.location.href = [[@{'/parcelPickUp?get=2'}]];
-        })
-
       })
     </script>
     <script th:inline="javascript">

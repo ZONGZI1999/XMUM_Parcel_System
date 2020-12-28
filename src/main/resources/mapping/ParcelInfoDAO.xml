@@ -81,6 +81,10 @@
         select * from parcel_info where parcel_id = #{parcelId}
     </select>
 
+    <select id="queryParcelInfoByTrackingNumber" resultType="Parcel_Info">
+        select * from parcel_info where tracking_number = #{trackingNumber}
+    </select>
+
     <select id="queryParcelId" resultType="Integer">
         select parcel_id
         from parcel_info

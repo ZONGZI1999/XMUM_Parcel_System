@@ -31,7 +31,7 @@ public class login {
     @ResponseBody
     public Result loginService(@RequestBody User userFromClient,
                                HttpServletRequest httpServletRequest){
-        Result loginResult = new Result(false, "Login failed! Please try again!"); //定义一个返回登录结果的实例
+        Result loginResult = new Result(false, "Login failed! Please try again!", null); //定义一个返回登录结果的实例
         try{ //进行数据库操作 使用try
             User user = userDAO.queryUserInfo(userFromClient.getUserId()); //从数据库中获取用户输入的ID的用户信息
             if (user.getPassword().equals(userFromClient.getPassword())){  //判断密码是否匹配

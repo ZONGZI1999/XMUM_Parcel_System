@@ -16,4 +16,5 @@ import lombok.NoArgsConstructor;
 public class Result {
     private Boolean success; //是否成功
     private String msg; //消息
+    private Object data;
 }

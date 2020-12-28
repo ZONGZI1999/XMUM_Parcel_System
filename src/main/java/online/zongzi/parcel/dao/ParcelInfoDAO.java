@@ -21,6 +21,8 @@ public interface ParcelInfoDAO {
     Integer countParcelByUserId(@Param("userId") Integer userId, @Param("currentState") Integer currentState);
     //获取单条parcel的信息
     Parcel_Info queryParcelInfo(@Param("parcelId") Integer parcelId);
+    //根据单号查找
+    Parcel_Info queryParcelInfoByTrackingNumber(@Param("trackingNumber") String trackingNumber);
     //更新代取人的编号
     void updateConsignee(@Param("parcelId") Integer parcelId,@Param("consigneeId") Integer consigneeId);
     //获得parcel ID

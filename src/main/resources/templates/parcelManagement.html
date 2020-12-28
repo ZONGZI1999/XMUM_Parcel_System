@@ -101,33 +101,19 @@
                 <div id="resultText"></div>
                 <div class="container d-flex justify-content-center">
                     <button type="button" class="btn btn-outline-info"
-                            style="text-align:center; width: 100px; font-size: 20;" id="okButton">
+                            style="text-align:center; margin-right: 10px; width: 100px; font-size: 20;" id="okButton">
                         OK
+                    </button>
+                    <button type="button" class="btn btn-outline-success"
+                            style="text-align:center; margin-left: 10px; font-size: 20;"
+                            th:onclick="window.location.href = [[@{'/admin/queryByTrackingNumber'}]]">
+                        Management By Tracking Number
                     </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- photo栏 -->
-<!--  <div class="container" style=" max-width: 35rem; margin-top: 20px; margin-bottom: 20px;">
-
-    <div class="card" >
-      <div class="card-header">Student</div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col"> <img src="images/photoimage.png" alt=""></div>
-          <div class="col">
-            <h4 class="card-text">WANG YILIN</h4>
-            <p class="card-text">SWE1809375</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>-->
 <!-- 学生的包裹记录导航栏 -->
 <div style="margin-bottom: 3%; margin-top: 3%; ">
     <div th:if="${userInfo != null}" class="container bg-white" style="border-radius: 15px; padding-top:30px;" >
@@ -358,14 +344,14 @@
     })
 </script>
 <!--代取操作-->
-<script>
+<script th:inline="javascript">
     function setParcelIdToInput(parcelIdFromUser, userId, state) {
         if (confirm("Are you sure? \n")) {
             $.ajax({
                 //请求方式
                 type: "GET",
                 //请求地址
-                url: "[[@{'/admin/pickUp'}]]",
+                url: [[@{'/admin/pickUp'}]],
                 data: {
                     'parcelId' :parcelIdFromUser,
                     'userId' : userId,

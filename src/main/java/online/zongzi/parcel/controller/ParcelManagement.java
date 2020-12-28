@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: zongzi
@@ -57,7 +59,7 @@ public class ParcelManagement {
     @ResponseBody
     public Result addParcel(HttpServletRequest httpServletRequest,
                           @RequestBody Parcel_Info parcelInfo) {
-        Result result = new Result(false, "");
+        Result result = new Result(false, "System Error", null);
         Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
         boolean ifExist = (parcelInfoDAO.queryParcelId(parcelInfo.getTrackingNumber()) != null);
         if (!ifExist) {
@@ -71,6 +73,31 @@ public class ParcelManagement {
         return result;
     }
 
+    @RequestMapping("/queryByTrackingNumber")
+    public String byTrackingNumber() {
+        return "parcelManagementByTN";
+    }
+
+    @RequestMapping("/queryParcelDetails")
+    @ResponseBody
+    public Result queryParcelDetails(@RequestParam String trackingNumber){
+        Result result = new Result(false, "Server Error! Plsease Retyr!", null);
+        try{
+            //获取包裹信息
+            Parcel_Info parcelInfo = parcelInfoDAO.queryParcelInfoByTrackingNumber(trackingNumber);
+            //获取当前最新状态
+            Parcel_Details parcelDetails = parcelDetailsDAO.queryParcelStateTime(parcelInfo.getParcelId(), null);
+            Map<String, Object> data = new HashMap<>();
+            data.put("parcelInfo", parcelInfo);
+            data.put("parcelDetails", parcelDetails);
+            result.setSuccess(true);
+            result.setMsg(userDAO.queryUserInfo(parcelInfo.getUserId()).getFullName());
+            result.setData(data);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     @RequestMapping("/parcelManagement")
     public String parcelManagement(HttpServletRequest httpServletRequest, //session
