@@ -75,7 +75,7 @@
             $('#submitButton').attr("disabled",true);
             $('#submitButton').text("Authenticating")
             var list = {
-                "userId": $("#userId").val(),
+                "studentID": $("#userId").val().toUpperCase(),
                 "password": $("#password").val()
             };
             setTimeout(function (){

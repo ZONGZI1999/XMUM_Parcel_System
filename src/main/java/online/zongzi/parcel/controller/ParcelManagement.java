@@ -51,7 +51,9 @@ public class ParcelManagement {
     private UserDAO userDAO;
 
     @RequestMapping("/parcelReg")
-    public String parcelReg(){
+    public String parcelReg(HttpServletRequest httpServletRequest){
+        Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
+        if(currentUserId>=0) return "redirect:/public/unauthorizedAccess";
         return "parcelReg";
     }
 
@@ -59,8 +61,9 @@ public class ParcelManagement {
     @ResponseBody
     public Result addParcel(HttpServletRequest httpServletRequest,
                           @RequestBody Parcel_Info parcelInfo) {
-        Result result = new Result(false, "System Error", null);
         Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
+        Result result = new Result(false, "System Error", null);
+
         boolean ifExist = (parcelInfoDAO.queryParcelId(parcelInfo.getTrackingNumber()) != null);
         if (!ifExist) {
             parcelManagementDAO.insertIntoInfo(parcelInfo);
@@ -74,13 +77,17 @@ public class ParcelManagement {
     }
 
     @RequestMapping("/queryByTrackingNumber")
-    public String byTrackingNumber() {
+    public String byTrackingNumber(HttpServletRequest httpServletRequest){
+        Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
+        if(currentUserId>=0) return "redirect:/public/unauthorizedAccess";
         return "parcelManagementByTN";
     }
 
     @RequestMapping("/queryParcelDetails")
     @ResponseBody
-    public Result queryParcelDetails(@RequestParam String trackingNumber){
+    public Result queryParcelDetails(HttpServletRequest httpServletRequest,
+                                     @RequestParam String trackingNumber){
+        Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
         Result result = new Result(false, "Server Error! Plsease Retyr!", null);
         try{
             //获取包裹信息
@@ -105,6 +112,8 @@ public class ParcelManagement {
                                    @RequestParam(defaultValue = "0", required = false) Integer get, //筛选数据
                                    @RequestParam(required = false) Integer userId,
                                    Model model){
+        Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
+        if(currentUserId>=0) return "redirect:/public/unauthorizedAccess";
         User user = null;
         try{
             user = userDAO.queryUserInfo(userId);
@@ -156,7 +165,6 @@ public class ParcelManagement {
                              @RequestParam Integer parcelId,
                              @RequestParam Integer userId,
                              @RequestParam(defaultValue = "0", required = false) Integer state){
-        System.out.println(httpServletRequest.getPathInfo());
         Integer currentUserId = (Integer) httpServletRequest.getSession().getAttribute("userId"); //从Session中获得用户ID
         Parcel_Details parcelDetails = null;
         Parcel_Info parcelInfo = null;

@@ -19,4 +19,5 @@ public interface UserDAO {
     User queryUserInfo(@Param("userId") Integer userId);
     //根据名字 返回可能存在的用户名
     List<User> queryUserInfoByName(@Param("fullName") String fullName);
+    User queryUserInfoByStudentId(@Param("studentId") String studentId);
 }

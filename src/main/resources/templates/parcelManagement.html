@@ -49,7 +49,7 @@
                 <form class="form-inline my-2 my-lg-0">
                     <div class="btn-group dropleft">
                         <button type="button" class="btn btn-info dropdown-toggle"
-                                style="width: 150px; height: 45px;"
+                                style="width: 150px; height: 45px;" id="logout"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Log out
                         </button>
@@ -278,6 +278,9 @@
         })
         $('#allParcel').click(function () {
             window.location.href = [[@{'/admin/parcelManagement?get=3'}]] + '&userId=' + [[${userInfo.getUserId()} ]];
+        })
+        $('#logout').click(function () {
+            window.location.href = [[@{'/public/logout'}]]
         })
 
     })

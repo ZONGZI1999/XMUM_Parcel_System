@@ -16,4 +16,5 @@ public class User {
     private Integer userId; //用户的id
     private String fullName; //用户的全名
     private String password; //用户的密码
+    private String studentID;
 }

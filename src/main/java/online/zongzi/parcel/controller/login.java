@@ -33,11 +33,12 @@ public class login {
                                HttpServletRequest httpServletRequest){
         Result loginResult = new Result(false, "Login failed! Please try again!", null); //定义一个返回登录结果的实例
         try{ //进行数据库操作 使用try
-            User user = userDAO.queryUserInfo(userFromClient.getUserId()); //从数据库中获取用户输入的ID的用户信息
+            User user = userDAO.queryUserInfoByStudentId(userFromClient.getStudentID()); //从数据库中获取用户输入的ID的用户信息
+            System.out.println(userFromClient);
             if (user.getPassword().equals(userFromClient.getPassword())){  //判断密码是否匹配
                 //如果密码匹配
                 HttpSession httpSession = httpServletRequest.getSession(); //获得Session
-                httpSession.setAttribute("userId", userFromClient.getUserId()); //将user ID放入Session中
+                httpSession.setAttribute("userId", user.getUserId()); //将user ID放入Session中
                 loginResult.setSuccess(true); //将结果状态设置为成功
                 loginResult.setMsg("Login successful! Please wait..."); //设置成功的消息
                 return loginResult; //返回结果
@@ -61,5 +62,10 @@ public class login {
         HttpSession httpSession = httpServletRequest.getSession(); //获取Session
         httpSession.removeAttribute("userId"); //将user ID从Session中移除
         return "redirect:/"; //重定向至根目录("/")
+    }
+
+    @RequestMapping("/unauthorizedAccess")
+    public String unauthorizedAccess(){
+        return "unauthorizedAccess";
     }
 }

@@ -1,5 +1,6 @@
 package online.zongzi.parcel.config;
 
+import online.zongzi.parcel.entity.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,13 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Object user = request.getSession().getAttribute("userId");
+
+        Integer user = (Integer) request.getSession().getAttribute("userId");
         if(user == null){
             //未登陆，返回登陆页面
             request.setAttribute("msg","Please login first.");
             request.getRequestDispatcher("/public/login").forward(request,response);
             return false;
-        }else{
+        }else {
             //已登陆，放行请求
             return true;
         }

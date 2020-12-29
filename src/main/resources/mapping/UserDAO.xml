@@ -11,4 +11,7 @@
     <select id="queryUserInfoByName" resultType="User">
         select * from user where full_name like '%${fullName}%'
     </select>
+    <select id="queryUserInfoByStudentId" resultType="User">
+        select * from user where student_id = #{studentId}
+    </select>
 </mapper>
