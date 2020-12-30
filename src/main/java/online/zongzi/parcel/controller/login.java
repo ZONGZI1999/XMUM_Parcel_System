@@ -57,6 +57,9 @@ public class login {
 
     @RequestMapping("/login")
     public String loginPage(HttpServletRequest httpServletRequest) {
+        if(httpServletRequest.getSession().getAttribute("userId") != null &&
+                (Integer) httpServletRequest.getSession().getAttribute("userId") <=0 )
+            return "redirect:/admin/parcelReg";
         if(httpServletRequest.getSession().getAttribute("userId") != null) //用户已经登录
             return "redirect:/"; //自动重定向到根目录("/")
         return "index"; //用户没登录 视图解析器 View Resolver 将会解析 index.html

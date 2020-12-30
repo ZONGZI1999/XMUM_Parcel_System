@@ -32,8 +32,11 @@
     <div class="half_section" id="right">
         <div class="spacing_alignment_box button_box">
             <div>
-                <input type="button" th:value="${session.get('userId')!= null ? 'UserID: ' + session.get('userId'): 'Login'}"
-                       class="menu_button button1 btn btn-primary" id="login" value="Login">
+                <input type="button"
+                       th:value="${session.get('userId')!= null
+                       ? 'UserID: ' + session.get('userId')
+                       : 'Login'}"
+                       class="menu_button button1 btn btn-primary" id="login">
                 <!--color, background color and margin is unique to each button-->
             </div>
         </div>

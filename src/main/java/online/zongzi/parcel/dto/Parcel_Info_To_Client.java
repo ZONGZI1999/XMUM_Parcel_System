@@ -14,6 +14,7 @@ import java.util.Date;
  **/
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Parcel_Info_To_Client implements Serializable {
     private static final long serialVersionUID = 4087132641904761116L;
     private Integer parcelId;
