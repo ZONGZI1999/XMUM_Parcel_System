@@ -73,6 +73,7 @@
                 return false;
             }
             $('#submitButton').attr("disabled",true);
+            $('#userId').val($("#userId").val().toUpperCase())
             $('#submitButton').text("Authenticating")
             var list = {
                 "studentID": $("#userId").val().toUpperCase(),

@@ -24,4 +24,9 @@ public class index {
         return "learnMore";
     }
 
+    @RequestMapping("/comingSoon")
+    public String comingSoon() {
+        return "comingSoon";
+    }
+
 }
