@@ -41,10 +41,14 @@ public class login {
                 httpSession.setAttribute("userId", user.getUserId()); //将user ID放入Session中
                 loginResult.setSuccess(true); //将结果状态设置为成功
                 loginResult.setMsg("Login successful! Please wait..."); //设置成功的消息
+                loginResult.setData(user);
                 return loginResult; //返回结果
+            } else {
+                loginResult.setMsg("Student ID or password is wrong!");
             }
         } catch (Exception e){
             //发生异常： user ID无法获取到用户的信息
+            loginResult.setMsg("Student ID or password is wrong!");
             logger.warn("No user has been found. (userId:" + userFromClient.getUserId() + ")"); //日志打印
         }
 

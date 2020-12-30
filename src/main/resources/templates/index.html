@@ -37,7 +37,7 @@
             <div class="login_box_items">
                 <div class="fill-in-box">
                     <div class="fill-in-titles">
-                        User ID
+                        Student ID
                     </div>
                     <div>
                         <input type="text" id="userId" name="userId" class="form-control">
@@ -95,7 +95,11 @@
                             $('#submitButton').hide()
                             $('#message').text(result['msg']);
                             setTimeout(function (){
-                                location.reload()
+                                if (result['data']['userId']<=0){
+                                    window.location.href = [[@{'/admin/parcelReg'}]]
+                                }else {
+                                    location.reload()
+                                }
                             },500)
                         } else {
                             $('#message').empty()

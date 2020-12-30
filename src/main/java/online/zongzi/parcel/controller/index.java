@@ -19,4 +19,9 @@ public class index {
         return "homepage"; //试图解析器解析homepage.html
     }
 
+    @RequestMapping("/public/learnMore")
+    public String learnMore(){
+        return "learnMore";
+    }
+
 }
