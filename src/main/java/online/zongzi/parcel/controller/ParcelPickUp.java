@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -133,7 +134,17 @@ public class ParcelPickUp {
     @RequestMapping("/userInfo")
     @ResponseBody
     public List<User> queryUserByName(@RequestParam("fullName") String fullName){
-        return userDAO.queryUserInfoByName(fullName);
+        List<User> result = new ArrayList<>();
+        try{
+            for (User user: userDAO.queryUserInfoByName(fullName)){
+                if (user.getUserId()>=0){
+                    result.add(user);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

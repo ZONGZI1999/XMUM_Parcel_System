@@ -182,7 +182,7 @@
     })
 </script>
 <!--表单提交-->
-<script>
+<script th:inline="javascript">
     $().ready(function () {
         $("#msg").hide()
         //Javascript
@@ -217,7 +217,7 @@
                     //请求方式
                     type: "POST",
                     //请求地址
-                    url: "[[@{'/admin/addParcel'}]]",
+                    url: [[@{'/admin/addParcel'}]],
                     contentType: "application/json;charset=UTF-8",
                     data:  JSON.stringify(data),
                     //请求成功
@@ -252,17 +252,17 @@
         //click -> (null)
         //页面跳转
         $('#parcelRegistration').click(function () {
-            window.location.href = "[[@{'/admin/parcelReg'}]]";
+            window.location.href = [[@{'/admin/parcelReg'}]];
         })
         $('#parcelManagement').click(function (){
-            window.location.href = "[[@{'/admin/parcelManagement'}]]";
+            window.location.href = [[@{'/admin/parcelManagement'}]];
         })
 
         $('#logout').click(function () {
-            window.location.href = "[[@{'/public/logout'}]]"
+            window.location.href = [[@{'/public/logout'}]]
         })
         $('#parcelPost').click(function () {
-            window.location.href = "[[@{'/comingSoon'}]]";
+            window.location.href = [[@{'/comingSoon'}]];
         })
     })
 </script>
