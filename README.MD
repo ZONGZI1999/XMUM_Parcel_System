@@ -10,6 +10,9 @@ Zheng Zongqi(SWE1809388 Team Leader)
 Wang Yilin(SWE1809375)
 HEE ZIXI(SWE1809649)
 
+#### Github Link:
+https://github.com/ZONGZI1999/XMUM_Parcel_System/
+
 ###### Visitors
 Our system allows visitors or guests to search for specific parcels without logging in. However, this can be done only with tracking numbers.
 
